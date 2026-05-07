@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jenny案 時間軸與爭點清單</title>
+  <style>
+    :root {
+      --bg: #f5efe8;
+      --paper: #fffaf3;
+      --ink: #201814;
+      --muted: #6e6259;
+      --line: #dccdbe;
+      --accent: #9a3412;
+      --accent-2: #7c2d12;
+      --soft: #f2e5d6;
+      --chip: #efe1d0;
+      --good: #31572c;
+      --warn: #92400e;
+      --info: #1d4ed8;
+      --shadow: 0 14px 34px rgba(75, 52, 37, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top right, rgba(154, 52, 18, 0.08), transparent 24%),
+        linear-gradient(180deg, #f8f2ea 0%, var(--bg) 100%);
+      font-family: "Microsoft JhengHei", "PingFang TC", sans-serif;
+      line-height: 1.72;
+    }
+
+    a {
+      color: var(--accent-2);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .shell {
+      width: min(1400px, calc(100vw - 32px));
+      margin: 24px auto 80px;
+      display: grid;
+      grid-template-columns: 320px minmax(0, 1fr);
+      gap: 20px;
+    }
+
+    .panel {
+      background: rgba(255, 250, 243, 0.88);
+      border: 1px solid rgba(220, 205, 190, 0.85);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 18px;
+      align-self: start;
+      border-radius: 24px;
+      overflow: hidden;
+    }
+
+    .sidebar-head {
+      padding: 22px 22px 18px;
+      background:
+        linear-gradient(145deg, rgba(154, 52, 18, 0.14), rgba(124, 45, 18, 0.04)),
+        var(--paper);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    h1 {
+      font-size: 34px;
+    }
+
+    .side-note {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .nav {
+      padding: 12px;
+      max-height: calc(100vh - 230px);
+      overflow: auto;
+    }
+
+    .nav-group {
+      margin-bottom: 16px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.46);
+      overflow: hidden;
+    }
+
+    .nav-title {
+      padding: 12px 14px;
+      font-size: 13px;
+      color: var(--muted);
+      background: rgba(239, 225, 208, 0.55);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav a {
+      display: block;
+      padding: 10px 14px;
+      color: var(--ink);
+      border-top: 1px solid rgba(220, 205, 190, 0.55);
+      font-size: 14px;
+    }
+
+    .nav a:first-of-type {
+      border-top: 0;
+    }
+
+    .nav a:hover {
+      background: rgba(242, 229, 214, 0.7);
+      text-decoration: none;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .hero {
+      position: relative;
+      border-radius: 28px;
+      padding: 28px;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -56px -72px auto;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(154, 52, 18, 0.2), transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero p {
+      margin: 14px 0 0;
+      max-width: 900px;
+      color: var(--muted);
+    }
+
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .action-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 42px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(154, 52, 18, 0.18);
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--accent-2);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .action-link:hover {
+      text-decoration: none;
+      background: rgba(243, 231, 216, 0.9);
+    }
+
+    .hero-grid {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .metric {
+      border-radius: 18px;
+      padding: 16px 18px;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(220, 205, 190, 0.88);
+    }
+
+    .metric .label {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .metric .value {
+      font-size: 25px;
+      font-weight: 700;
+    }
+
+    .card {
+      border-radius: 24px;
+      padding: 24px;
+    }
+
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 18px;
+      margin-bottom: 16px;
+    }
+
+    .card-title small {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 6px 11px;
+      border-radius: 999px;
+      background: var(--chip);
+      border: 1px solid rgba(154, 52, 18, 0.12);
+      font-size: 13px;
+      color: var(--accent-2);
+      white-space: nowrap;
+    }
+
+    .chip.good {
+      background: rgba(49, 87, 44, 0.1);
+      color: var(--good);
+      border-color: rgba(49, 87, 44, 0.16);
+    }
+
+    .chip.warn {
+      background: rgba(146, 64, 14, 0.12);
+      color: var(--warn);
+      border-color: rgba(146, 64, 14, 0.18);
+    }
+
+    .chip.info {
+      background: rgba(29, 78, 216, 0.1);
+      color: var(--info);
+      border-color: rgba(29, 78, 216, 0.16);
+    }
+
+    .timeline {
+      position: relative;
+      padding-left: 22px;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 8px;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: linear-gradient(180deg, rgba(154, 52, 18, 0.32), rgba(154, 52, 18, 0.08));
+    }
+
+    .event {
+      position: relative;
+      padding: 0 0 18px 24px;
+      margin-bottom: 14px;
+      border-bottom: 1px solid rgba(220, 205, 190, 0.65);
+    }
+
+    .event:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .event::before {
+      content: "";
+      position: absolute;
+      left: -2px;
+      top: 7px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 5px rgba(154, 52, 18, 0.12);
+    }
+
+    .event-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: baseline;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+
+    .event-date {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .event p {
+      margin: 0;
+      color: var(--ink);
+    }
+
+    .event .sub {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .issue-grid,
+    .evidence-grid,
+    .source-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .issue-card,
+    .evidence-card,
+    .source-card {
+      padding: 18px;
+      border-radius: 20px;
+      border: 1px solid rgba(220, 205, 190, 0.85);
+      background: rgba(255, 255, 255, 0.56);
+    }
+
+    .issue-card h3,
+    .evidence-card h3,
+    .source-card h3 {
+      font-size: 17px;
+      margin-bottom: 10px;
+    }
+
+    .issue-card p,
+    .evidence-card p,
+    .source-card p {
+      margin: 0 0 10px;
+      color: var(--muted);
+    }
+
+    .flat-list {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .flat-list li {
+      margin: 6px 0;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .note-box {
+      padding: 16px 18px;
+      border-radius: 18px;
+      border: 1px solid rgba(220, 205, 190, 0.85);
+      background: rgba(255, 255, 255, 0.56);
+    }
+
+    .note-box h3 {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .note-box p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    @media (max-width: 1100px) {
+      .shell {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+
+      .hero-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .hero-grid,
+      .issue-grid,
+      .evidence-grid,
+      .source-grid,
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+
+      .card-head {
+        flex-direction: column;
+      }
+
+      h1 {
+        font-size: 29px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar panel">
+      <div class="sidebar-head">
+        <span class="eyebrow">Case Map</span>
+        <h2>Jenny案</h2>
+        <div class="side-note">
+          這一頁不是證據總表，而是把案件走向、訴訟節點、攻防重心先攤平。
+        </div>
+      </div>
+      <nav class="nav">
+        <div class="nav-group">
+          <div class="nav-title">總覽</div>
+          <a href="#overview">頁面說明</a>
+          <a href="#focus">目前最該盯的點</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">時間軸</div>
+          <a href="#timeline-contract">施工與換手</a>
+          <a href="#timeline-defect">發現漏水與擴大</a>
+          <a href="#timeline-litigation">訴訟與鑑定程序</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">爭點</div>
+          <a href="#issues">核心爭點清單</a>
+          <a href="#evidence-map">關鍵證據對應</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">來源</div>
+          <a href="#sources">來源文件</a>
+          <a href="./index.html">回證據閱讀版</a>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <section class="hero panel" id="overview">
+        <span class="eyebrow">Jenny Case / Timeline & Issues</span>
+        <h1>時間軸 + 爭點清單</h1>
+        <p>
+          這份版本把案件拆成兩條線看：一條是「事情怎麼發生到現在」，另一條是「法院最後要判哪些點」。
+          如果你要跟律師、家人或協助者快速同步，先看這頁會比直接翻證據更快。
+        </p>
+        <div class="action-row">
+          <a class="action-link" href="./index.html">回證據閱讀版</a>
+          <a class="action-link" href="#timeline-contract">直接看時間軸</a>
+          <a class="action-link" href="#issues">直接看爭點</a>
+        </div>
+        <div class="hero-grid">
+          <div class="metric">
+            <span class="label">可定位的重要節點</span>
+            <span class="value">11</span>
+          </div>
+          <div class="metric">
+            <span class="label">核心爭點</span>
+            <span class="value">5</span>
+          </div>
+          <div class="metric">
+            <span class="label">優先證據</span>
+            <span class="value">4 組</span>
+          </div>
+          <div class="metric">
+            <span class="label">下一程序重點</span>
+            <span class="value">2026-05-19</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card panel" id="focus">
+        <div class="card-head">
+          <div class="card-title">
+            <small>Current Focus</small>
+            <h2>目前最該盯的三件事</h2>
+          </div>
+          <div class="chip-row">
+            <span class="chip good">施工範圍</span>
+            <span class="chip good">漏水原因</span>
+            <span class="chip good">鑑定問題設計</span>
+          </div>
+        </div>
+        <div class="two-col">
+          <div class="note-box">
+            <h3>1. 睿創到底承接到哪裡</h3>
+            <p>真正要釐清的不是「那面牆是不是他砌的」，而是他接手後是否承諾該區整體防水、貼磚、收邊與保固。</p>
+          </div>
+          <div class="note-box">
+            <h3>2. 地震說能不能站住</h3>
+            <p>現有材料比較像窗框接縫、門檻、地坪與異材質交界處理不全，不像單純 0403 地震造成的外力裂縫。</p>
+          </div>
+          <div class="note-box">
+            <h3>3. 鑑定不能只問「有沒有漏」</h3>
+            <p>鑑定必須把源頭、工法、修復範圍、修復費用與修復期間是否可住，全部問進去，否則後面金額與修復方式會失焦。</p>
+          </div>
+          <div class="note-box">
+            <h3>4. 損害不只修漏水</h3>
+            <p>目前資料已經延伸到壁癌、木地板拆除、潮濕蟲、房間與浴室長期不能用，這些都應整理進損害敘事。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card panel" id="timeline-contract">
+        <div class="card-head">
+          <div class="card-title">
+            <small>Timeline I</small>
+            <h2>施工、換手與保固承諾</h2>
+          </div>
+          <div class="chip-row">
+            <span class="chip">前手：吳政倫</span>
+            <span class="chip">後手：睿創</span>
+            <span class="chip good">10年防水保固</span>
+          </div>
+        </div>
+        <div class="timeline">
+          <article class="event">
+            <div class="event-head">
+              <h3>前手施工 19 天內漏水三次，原告要求退場</h3>
+              <span class="event-date">時間未明確記至日，依對話為最早階段</span>
+            </div>
+            <p>依 LINE 整理，原告先找親戚承作裝潢與紅磚牆工程，施工僅 19 天即在不同位置漏水三次，因此要求其離場。</p>
+            <div class="sub">意義：這是兩被告責任銜接的起點，也說明為何後續會重找設計公司接手。</div>
+          </article>
+
+          <article class="event">
+            <div class="event-head">
+              <h3>2023-02-05 睿創表示「為了保險還是會再做一次」防水</h3>
+              <span class="event-date">書狀載明：112年2月5日</span>
+            </div>
+            <p>書狀記載雙方對話中，睿創明白表示即使前手已修，也會自己重做一次防水，因為「不是我們做的，長期不敢承擔」。</p>
+            <div class="sub">意義：直接打到後手是否承接整體防水責任，而不是只做局部美化。</div>
+          </article>
+
+          <article class="event">
+            <div class="event-head">
+              <h3>2023-02-13 睿創再次表示防水層本來就會重做</h3>
+              <span class="event-date">書狀載明：112年2月13日</span>
+            </div>
+            <p>原告擔心試水造成樓下風險時，睿創回覆「我們本來防水層就會再做一次」、「最後還是會重新施作」。</p>
+            <div class="sub">意義：這組說法與後來「那面牆沒收費所以不保固」的抗辯存在明顯張力。</div>
+          </article>
+
+          <article class="event">
+            <div class="event-head">
+              <h3>2023-02 下旬 前手吳政倫合意解約退場</h3>
+              <span class="event-date">書狀載明：112年2月底前後</span>
+            </div>
+            <p>書狀表示原告約於 2023 年 2 月底與前手合意解約，於 2023-03-11 前交還房屋。</p>
+            <div class="sub">意義：這是前手責任終點，也是後手進場前的交屋節點。</div>
+          </article>
+
+          <article class="event">
+            <div class="event-head">
+              <h3>2023-03-11 與睿創簽約，並出具防水保固</h3>
+              <span class="event-date">書狀載明：112年3月11日</span>
+            </div>
+            <p>依書狀與證據，睿創接手後承作主浴室壁面、地面拆除、防水、貼磚等項目，並另出具 10 年防水保固切結。</p>
+            <div class="sub">意義：後手是否已承諾處理整體漏水區域，核心就在這裡。</div>
+          </article>
+        </div>
+      </section>
+
+      <section class="card panel" id="timeline-defect">
+        <div class="card-head">
+          <div class="card-title">
+            <small>Timeline II</small>
+            <h2>發現漏水、損害擴大與現場跡象</h2>
+          </div>
+          <div class="chip-row">
+            <span class="chip warn">壁癌</span>
+            <span class="chip warn">潮濕蟲</span>
+            <span class="chip warn">房間無法使用</span>
+          </div>
+        </div>
+        <div class="timeline">
+          <article class="event">
+            <div class="event-head">
+              <h3>入住後約半年開始出現壁癌</h3>
+              <span class="event-date">依 LINE 整理，未定位到精確日期</span>
+            </div>
+            <p>LINE 整理指出，裝潢完成入住後約半年開始出現壁癌，從發現壁癌到確認是廁所漏水，中間又拖了約八個月。</p>
+            <div class="sub">意義：可解釋原告不是立即掌握漏水源頭，亦有助回應對方若主張延誤通知的說法。</div>
+          </article>
+
+          <article class="event">
+            <div class="event-head">
+              <h3>2024-01-28 發現壁面漏水 / 壁癌</h3>
+              <span class="event-date">書狀與 LINE 均有記載</span>
+            </div>
+            <p>書狀載明原告於 2024-01-28 發現壁面漏水問題，並請大樓總幹事張克華陪同查看；LINE 整理亦記「2024/1/28 發現壁癌」。</p>
+            <div class="sub">意義：這是瑕疵發現期間的重要起算節點，也是法院最容易抓的日期。</div>
+          </article>
+
+          <article class="event">
+            <div class="event-head">
+              <h3>2024-04-11 睿創工人來處理壁癌並重上防水漆</h3>
+              <span class="event-date">LINE 整理載明：2024/4/11</span>
+            </div>
+            <p>依整理，睿創曾派兩名工人前來處理壁癌，並重新上防水漆，但這顯然未能真正排除漏水源頭。</p>
+            <div class="sub">意義：可作為被告知悉瑕疵、曾嘗試處理但未成功的佐證。</div>
+          </article>
+
+          <article class="event">
+            <div class="event-head">
+              <h3>2024-09-16 找到明確出水點</h3>
+              <span class="event-date">依 LINE 整理</span>
+            </div>
+            <p>LINE 記載原告直到 2024-09-16 才明確找到出水點，先前設計公司長期將原因推給外牆，直到助理到場才無法再否認。</p>
+            <div class="sub">意義：說明「知道有問題」與「真正確認漏水源」是兩件事。</div>
+          </article>
+
+          <article class="event">
+            <div class="event-head">
+              <h3>2026-05-05 至 2026-05-06 集中整理出可視化現場證據</h3>
+              <span class="event-date">依圖文定位整理</span>
+            </div>
+            <p>現場照片與影片已可定位到窗框空洞、噴水穿透、紅磚牆切窗、接縫裂縫、木板拆開後潮濕與黑點等具體現象。</p>
+            <div class="sub">意義：這些不是新的案件事實，但已經可以更清楚支撐「不是地震、而是工法或交界處理問題」的敘事。</div>
+          </article>
+        </div>
+      </section>
+
+      <section class="card panel" id="timeline-litigation">
+        <div class="card-head">
+          <div class="card-title">
+            <small>Timeline III</small>
+            <h2>訴訟程序與待來鑑定</h2>
+          </div>
+          <div class="chip-row">
+            <span class="chip info">114年度建字第109號</span>
+            <span class="chip info">114年度補字第632號</span>
+            <span class="chip good">2026-05-19 現場鑑定</span>
+          </div>
+        </div>
+        <div class="timeline">
+          <article class="event">
+            <div class="event-head">
+              <h3>2024-11-29 遞狀起訴</h3>
+              <span class="event-date">裁定理由欄明示：113年11月29日</span>
+            </div>
+            <p>法院裁定中直接記載原告於 2024-11-29 遞狀起訴，因此本件第一審訴訟已正式進入法院程序。</p>
+            <div class="sub">意義：這個日期可對接裁判費、訴訟標的價額與程序時間線。</div>
+          </article>
+
+          <article class="event">
+            <div class="event-head">
+              <h3>2025-03-11 法院補字裁定核定價額</h3>
+              <span class="event-date">114年度補字第632號</span>
+            </div>
+            <p>法院核定本件訴訟標的價額為新臺幣 523,898 元，並命補繳第一審裁判費 5,730 元。</p>
+            <div class="sub">意義：這不是本案實體勝敗，但顯示法院已將修繕費與另外請求金額具體納入程序計算。</div>
+          </article>
+
+          <article class="event">
+            <div class="event-head">
+              <h3>2026-05-19 預定法院系爭鑑定</h3>
+              <span class="event-date">依 LINE 整理：5月19號才會進行鑑定</span>
+            </div>
+            <p>LINE 記載 2026-05-19 將進行法院這次的鑑定，且技師公會會到現場。這是目前程序上最重要的下一個節點。</p>
+            <div class="sub">意義：如果鑑定問題只停在「有沒有漏」，後續修復方法、期間、費用與是否可住都可能失去主動權。</div>
+          </article>
+        </div>
+      </section>
+
+      <section class="card panel" id="issues">
+        <div class="card-head">
+          <div class="card-title">
+            <small>Issue List</small>
+            <h2>核心爭點清單</h2>
+          </div>
+          <div class="chip-row">
+            <span class="chip good">責任範圍</span>
+            <span class="chip good">漏水原因</span>
+            <span class="chip good">時效</span>
+            <span class="chip good">損害</span>
+          </div>
+        </div>
+        <div class="issue-grid">
+          <article class="issue-card">
+            <h3>爭點 1：漏水區域是否屬兩被告承攬或保固範圍</h3>
+            <p>目前主張核心是：即使紅磚牆不是睿創親自砌作，睿創接手後仍承諾整體防水、貼磚、收邊與保固，不得只抓「打底工資扣除新砌隔間牆」一句就全面切割責任。</p>
+            <ul class="flat-list">
+              <li>有利材料：書狀第 1 點、原證4、第19項備註、原證5、對話錄音內容。</li>
+              <li>對方抗辯：那面牆沒收費，所以不在保固範圍。</li>
+            </ul>
+          </article>
+
+          <article class="issue-card">
+            <h3>爭點 2：漏水原因是施工瑕疵還是 0403 地震</h3>
+            <p>現有材料比較集中在窗框與牆接合處、門檻、地坪與噴水後直接穿透等現象，這些都更像工法或接縫處理缺失，而不是單純地震造成。</p>
+            <ul class="flat-list">
+              <li>有利材料：E01、E02、E05、E06、E07。</li>
+              <li>對方抗辯：紅磚牆與原牆交界裂縫是地震所致。</li>
+            </ul>
+          </article>
+
+          <article class="issue-card">
+            <h3>爭點 3：原告是否逾瑕疵發現期間</h3>
+            <p>書狀主張本件工程已附合於建物，應適用民法第499條 5 年期間；即便退一步看，依 2024-01-28 發現漏水的時間，也主張未逾法定期間。</p>
+            <ul class="flat-list">
+              <li>有利材料：書狀第 2 點、2024-01-28 發現漏水、2024-11-29 起訴。</li>
+              <li>需要注意：不同工作項目是否都能被法院接受納入第499條的範圍。</li>
+            </ul>
+          </article>
+
+          <article class="issue-card">
+            <h3>爭點 4：可請求的損害範圍到哪裡</h3>
+            <p>除了修復費與鑑定費，現有脈絡還包含房間與浴室長期不能使用、木地板拆除、壁癌、潮濕蟲、可能的遷居成本與居住品質減損。</p>
+            <ul class="flat-list">
+              <li>有利材料：E03、E04、E12，及 LINE 中「一年半沒睡原房」等敘述。</li>
+              <li>需要補強：若要拉高損害額，宜再補醫療、住宿、除蟲、修繕或替代居住支出證明。</li>
+            </ul>
+          </article>
+
+          <article class="issue-card">
+            <h3>爭點 5：法院鑑定要不要把修復方法與可居住性問清楚</h3>
+            <p>單有「有漏水」不夠。若後續要請求修復費、施工期間遷居與整體拆作，就要讓鑑定同步回答源頭、修復工法、修復範圍、費用與修復期間是否仍可正常居住。</p>
+            <ul class="flat-list">
+              <li>有利材料：書狀第 4 點鑑定事項已經朝這方向寫。</li>
+              <li>程序重點：2026-05-19 現場鑑定前後，補充提問要盡量精準。</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="card panel" id="evidence-map">
+        <div class="card-head">
+          <div class="card-title">
+            <small>Evidence Map</small>
+            <h2>關鍵證據對應</h2>
+          </div>
+          <div class="chip-row">
+            <span class="chip good">先看這四組</span>
+            <span class="chip">可回證據閱讀版細看</span>
+          </div>
+        </div>
+        <div class="evidence-grid">
+          <article class="evidence-card">
+            <h3><a href="./index.html#e01">E01 第一次鑑定書</a></h3>
+            <p>對應爭點：漏水位置、漏水原因、非地震說、修復範圍。</p>
+            <ul class="flat-list">
+              <li>角色：技術底稿。</li>
+              <li>弱點：目前多為翻拍，正式提出宜回到完整原件。</li>
+            </ul>
+          </article>
+
+          <article class="evidence-card">
+            <h3><a href="./index.html#e05">E05 噴水穿透影片</a></h3>
+            <p>對應爭點：水路貫穿、施工瑕疵、修復必要性。</p>
+            <ul class="flat-list">
+              <li>角色：最直觀的動態證據。</li>
+              <li>搭配：E02 空洞照、E07 裂縫照一起看最強。</li>
+            </ul>
+          </article>
+
+          <article class="evidence-card">
+            <h3><a href="./index.html#e08">E08 睿創估價單</a></h3>
+            <p>對應爭點：承攬範圍、備註切割、是否全區保固。</p>
+            <ul class="flat-list">
+              <li>角色：目前正面攻防核心。</li>
+              <li>關鍵句：第19項「已扣除新砌隔間牆」。</li>
+            </ul>
+          </article>
+
+          <article class="evidence-card">
+            <h3><a href="./index.html#e11">E11 阿倫內容與睿創保固</a></h3>
+            <p>對應爭點：前手工程範圍、後手 10 年保固、兩被告責任銜接。</p>
+            <ul class="flat-list">
+              <li>角色：把前手與後手連起來。</li>
+              <li>搭配：書狀第 1 點第 3 至 6 小點一起看。</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="card panel" id="sources">
+        <div class="card-head">
+          <div class="card-title">
+            <small>Sources</small>
+            <h2>來源文件</h2>
+          </div>
+          <div class="chip-row">
+            <span class="chip">source/</span>
+            <span class="chip">證據閱讀版可回跳</span>
+          </div>
+        </div>
+        <div class="source-grid">
+          <article class="source-card">
+            <h3><a href="./source/005c-民事準備(一)暨聲請調查證據狀.docx.md">民事準備(一)暨聲請調查證據狀</a></h3>
+            <p>本頁中關於承攬範圍、瑕疵發現期間、地震抗辯與鑑定事項，主要以這份書狀為骨架。</p>
+          </article>
+
+          <article class="source-card">
+            <h3><a href="./source/臺灣臺北地方法院 114 年度補字第 632 號民事裁定.txt">114年度補字第632號裁定</a></h3>
+            <p>程序時間軸中的起訴後節點、訴訟標的價額與裁判費命補資訊，主要來自這份裁定。</p>
+          </article>
+
+          <article class="source-card">
+            <h3><a href="./source/圖文對話整理_依截圖定位.md">圖文對話整理</a></h3>
+            <p>2026-05-05 到 2026-05-06 的現場照片、影片與對話位置，是本頁將技術現象落進時間軸的重要來源。</p>
+          </article>
+
+          <article class="source-card">
+            <h3><a href="./source/證據目錄版_圖文對話定位.md">證據目錄版</a></h3>
+            <p>本頁的「關鍵證據對應」段落，是從這份目錄版濃縮出來的快速閱讀版。</p>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

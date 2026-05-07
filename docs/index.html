@@ -172,6 +172,31 @@
       color: var(--muted);
     }
 
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .action-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 42px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(154, 52, 18, 0.18);
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--accent-2);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .action-link:hover {
+      text-decoration: none;
+      background: rgba(243, 231, 216, 0.9);
+    }
+
     .hero-grid {
       margin-top: 18px;
       display: grid;
@@ -437,6 +462,7 @@
           <div class="nav-title">總覽</div>
           <a href="#overview">閱讀說明</a>
           <a href="#priority">優先證據</a>
+          <a href="./timeline.html">時間軸 + 爭點清單</a>
         </div>
         <div class="nav-group">
           <div class="nav-title">正式證據候選</div>
@@ -468,6 +494,10 @@
           這份版本是為了「直接看圖」而做的。保留原來的證據邏輯，但改成卡片式版面，讓你在瀏覽器中就能看每個證物的
           時間、用途、爭點與圖片本體。
         </p>
+        <div class="action-row">
+          <a class="action-link" href="./timeline.html">看時間軸 + 爭點清單</a>
+          <a class="action-link" href="#priority">先看四組優先證據</a>
+        </div>
         <div class="hero-grid">
           <div class="metric">
             <span class="label">正式證據候選</span>
@@ -814,15 +844,15 @@
         <h2>來源檔案</h2>
         <p>
           文字版時序整理：
-          <a href="./assets/圖文對話整理_依截圖定位.md">圖文對話整理_依截圖定位.md</a>
+          <a href="./source/圖文對話整理_依截圖定位.md">圖文對話整理_依截圖定位.md</a>
         </p>
         <p>
           證據目錄文字版：
-          <a href="./assets/證據目錄版_圖文對話定位.md">證據目錄版_圖文對話定位.md</a>
+          <a href="./source/證據目錄版_圖文對話定位.md">證據目錄版_圖文對話定位.md</a>
         </p>
         <p>
           書狀：
-          <a href="./assets/005c-民事準備(一)暨聲請調查證據狀.docx.md">民事準備(一)暨聲請調查證據狀.docx.md</a>
+          <a href="./source/005c-民事準備(一)暨聲請調查證據狀.docx.md">民事準備(一)暨聲請調查證據狀.docx.md</a>
         </p>
       </section>
     </main>
