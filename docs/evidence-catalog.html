@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jenny案 證據目錄頁</title>
+  <style>
+    :root {
+      --bg: #f5efe8;
+      --paper: #fffaf3;
+      --ink: #201814;
+      --muted: #6e6259;
+      --line: #dccdbe;
+      --accent: #9a3412;
+      --accent-2: #7c2d12;
+      --soft: #f2e5d6;
+      --chip: #efe1d0;
+      --good: #31572c;
+      --warn: #92400e;
+      --shadow: 0 14px 34px rgba(75, 52, 37, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top right, rgba(154, 52, 18, 0.08), transparent 24%),
+        linear-gradient(180deg, #f8f2ea 0%, var(--bg) 100%);
+      font-family: "Microsoft JhengHei", "PingFang TC", sans-serif;
+      line-height: 1.72;
+    }
+
+    a { color: var(--accent-2); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .shell {
+      width: min(1380px, calc(100vw - 32px));
+      margin: 24px auto 80px;
+      display: grid;
+      grid-template-columns: 320px minmax(0, 1fr);
+      gap: 20px;
+    }
+
+    .panel {
+      background: rgba(255, 250, 243, 0.88);
+      border: 1px solid rgba(220, 205, 190, 0.85);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 18px;
+      align-self: start;
+      border-radius: 24px;
+      overflow: hidden;
+    }
+
+    .sidebar-head {
+      padding: 22px 22px 18px;
+      background:
+        linear-gradient(145deg, rgba(154, 52, 18, 0.14), rgba(124, 45, 18, 0.04)),
+        var(--paper);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    h1, h2, h3 { margin: 0; line-height: 1.2; }
+    h1 { font-size: 34px; }
+
+    .side-note {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .nav {
+      padding: 12px;
+      max-height: calc(100vh - 230px);
+      overflow: auto;
+    }
+
+    .nav-group {
+      margin-bottom: 16px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.46);
+      overflow: hidden;
+    }
+
+    .nav-title {
+      padding: 12px 14px;
+      font-size: 13px;
+      color: var(--muted);
+      background: rgba(239, 225, 208, 0.55);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav a {
+      display: block;
+      padding: 10px 14px;
+      color: var(--ink);
+      border-top: 1px solid rgba(220, 205, 190, 0.55);
+      font-size: 14px;
+    }
+
+    .nav a:first-of-type { border-top: 0; }
+    .nav a:hover {
+      background: rgba(242, 229, 214, 0.7);
+      text-decoration: none;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .hero {
+      position: relative;
+      border-radius: 28px;
+      padding: 28px;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -56px -72px auto;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(154, 52, 18, 0.2), transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero p {
+      margin: 14px 0 0;
+      max-width: 900px;
+      color: var(--muted);
+    }
+
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .action-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 42px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(154, 52, 18, 0.18);
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--accent-2);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .action-link:hover {
+      text-decoration: none;
+      background: rgba(243, 231, 216, 0.9);
+    }
+
+    .hero-grid {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .metric {
+      border-radius: 18px;
+      padding: 16px 18px;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(220, 205, 190, 0.88);
+    }
+
+    .metric .label {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .metric .value {
+      font-size: 25px;
+      font-weight: 700;
+    }
+
+    .card {
+      border-radius: 24px;
+      padding: 24px;
+    }
+
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 18px;
+      margin-bottom: 16px;
+    }
+
+    .card-title small {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 6px 11px;
+      border-radius: 999px;
+      background: var(--chip);
+      border: 1px solid rgba(154, 52, 18, 0.12);
+      font-size: 13px;
+      color: var(--accent-2);
+      white-space: nowrap;
+    }
+
+    .chip.good {
+      background: rgba(49, 87, 44, 0.1);
+      color: var(--good);
+      border-color: rgba(49, 87, 44, 0.16);
+    }
+
+    .chip.warn {
+      background: rgba(146, 64, 14, 0.12);
+      color: var(--warn);
+      border-color: rgba(146, 64, 14, 0.18);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 12px 10px;
+      border-bottom: 1px solid rgba(220, 205, 190, 0.75);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: rgba(239, 225, 208, 0.55);
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .priority-grid,
+    .note-grid,
+    .thumb-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .priority-card,
+    .note-box {
+      padding: 18px;
+      border-radius: 20px;
+      border: 1px solid rgba(220, 205, 190, 0.85);
+      background: rgba(255, 255, 255, 0.56);
+    }
+
+    .priority-card h3,
+    .note-box h3 {
+      font-size: 17px;
+      margin-bottom: 10px;
+    }
+
+    .priority-card p,
+    .note-box p {
+      margin: 0 0 10px;
+      color: var(--muted);
+    }
+
+    .priority-card ul,
+    .note-box ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .priority-card li,
+    .note-box li {
+      margin: 6px 0;
+    }
+
+    .thumb-grid {
+      margin-top: 14px;
+    }
+
+    .media {
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(220, 205, 190, 0.95);
+      background: #fff;
+      box-shadow: 0 10px 22px rgba(71, 49, 34, 0.08);
+    }
+
+    .media img {
+      display: block;
+      width: 100%;
+      background: #ede4d8;
+      cursor: zoom-in;
+    }
+
+    .caption {
+      padding: 10px 12px 12px;
+      font-size: 13px;
+      color: var(--muted);
+      border-top: 1px solid rgba(216, 203, 189, 0.65);
+      background: rgba(255, 250, 242, 0.75);
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(20, 14, 10, 0.82);
+      padding: 28px;
+      z-index: 999;
+    }
+
+    .modal.open { display: flex; }
+
+    .modal img {
+      max-width: min(92vw, 1600px);
+      max-height: 90vh;
+      border-radius: 18px;
+      box-shadow: 0 18px 60px rgba(0, 0, 0, 0.35);
+      background: white;
+    }
+
+    .modal button {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      border: 0;
+      border-radius: 999px;
+      width: 42px;
+      height: 42px;
+      background: rgba(255, 255, 255, 0.12);
+      color: white;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 1100px) {
+      .shell { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+      .hero-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 760px) {
+      .hero-grid,
+      .priority-grid,
+      .note-grid,
+      .thumb-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card-head { flex-direction: column; }
+      h1 { font-size: 29px; }
+      table, thead, tbody, th, td, tr { display: block; }
+      thead { display: none; }
+      tr {
+        margin-bottom: 14px;
+        border: 1px solid rgba(220, 205, 190, 0.75);
+        border-radius: 16px;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.5);
+      }
+      td {
+        border-bottom: 1px solid rgba(220, 205, 190, 0.5);
+      }
+      td:last-child { border-bottom: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar panel">
+      <div class="sidebar-head">
+        <span class="eyebrow">Evidence Catalog</span>
+        <h2>證據目錄頁</h2>
+        <div class="side-note">
+          這一頁是對外閱讀版。<br />
+          重點是每組證據「能證明什麼、打哪個爭點、強弱在哪裡」。
+        </div>
+      </div>
+      <nav class="nav">
+        <div class="nav-group">
+          <div class="nav-title">總覽</div>
+          <a href="#overview">頁面說明</a>
+          <a href="#priority">四組優先證據</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">內容</div>
+          <a href="#table">證據總表</a>
+          <a href="#notes">使用提醒</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">延伸閱讀</div>
+          <a href="./index.html" target="_blank" rel="noopener noreferrer">證據閱讀版</a>
+          <a href="./conversation.html" target="_blank" rel="noopener noreferrer">對話整理頁</a>
+          <a href="./timeline.html" target="_blank" rel="noopener noreferrer">時間軸 + 爭點</a>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <section class="hero panel" id="overview">
+        <span class="eyebrow">Jenny Case / Evidence Catalog</span>
+        <h1>證據目錄頁</h1>
+        <p>
+          這份版本把原本的證據目錄重新做成瀏覽頁。你不需要打開 GitHub 的 Markdown viewer，
+          就能直接看到每組證據的用途、對應爭點與提出建議。
+        </p>
+        <div class="action-row">
+          <a class="action-link" href="./index.html" target="_blank" rel="noopener noreferrer">回證據閱讀版</a>
+          <a class="action-link" href="./conversation.html" target="_blank" rel="noopener noreferrer">看對話整理</a>
+          <a class="action-link" href="./timeline.html" target="_blank" rel="noopener noreferrer">看時間軸</a>
+        </div>
+        <div class="hero-grid">
+          <div class="metric"><span class="label">正式證據候選</span><span class="value">13</span></div>
+          <div class="metric"><span class="label">最優先證據</span><span class="value">4</span></div>
+          <div class="metric"><span class="label">補強組</span><span class="value">5</span></div>
+          <div class="metric"><span class="label">衍生 / 輔助組</span><span class="value">4</span></div>
+        </div>
+      </section>
+
+      <section class="card panel" id="priority">
+        <div class="card-head">
+          <div class="card-title">
+            <small>Priority</small>
+            <h2>四組優先證據</h2>
+          </div>
+          <div class="chip-row">
+            <span class="chip good">E01</span>
+            <span class="chip good">E05</span>
+            <span class="chip good">E08</span>
+            <span class="chip good">E11</span>
+          </div>
+        </div>
+        <div class="priority-grid">
+          <article class="priority-card">
+            <h3>E01 第一次鑑定書</h3>
+            <p>技術底稿。把漏水位置、地坪、門檻與窗框問題先固定下來。</p>
+            <ul>
+              <li>主打：漏水原因、非地震說、修復範圍。</li>
+              <li>風險：目前是翻拍，正式卷證宜回到原始報告。</li>
+            </ul>
+          </article>
+          <article class="priority-card">
+            <h3>E05 噴水穿透影片</h3>
+            <p>最直觀的動態證據。直接顯示水路不是模糊潮氣，而是明確貫穿。</p>
+            <ul>
+              <li>主打：施工瑕疵、修復必要性。</li>
+              <li>搭配：E02 空洞照、E07 裂縫照。</li>
+            </ul>
+          </article>
+          <article class="priority-card">
+            <h3>E08 睿創估價單</h3>
+            <p>目前攻防核心。焦點在第 19 項備註與拆除八折。</p>
+            <ul>
+              <li>主打：承攬範圍、保固範圍、備註免責抗辯。</li>
+              <li>搭配：書狀與錄音內容一起使用。</li>
+            </ul>
+          </article>
+          <article class="priority-card">
+            <h3>E11 阿倫內容與保固</h3>
+            <p>把前手工程內容與後手 10 年防水保固銜接起來。</p>
+            <ul>
+              <li>主打：兩被告責任交界。</li>
+              <li>用途：防止責任被互相推走。</li>
+            </ul>
+          </article>
+        </div>
+        <div class="thumb-grid">
+          <figure class="media"><img src="./assets/S__23658585.jpg" alt="P1" /><figcaption class="caption">E01：第一次鑑定</figcaption></figure>
+          <figure class="media"><img src="./assets/S__23691795.jpg" alt="P2" /><figcaption class="caption">E05：噴水穿透外側位置</figcaption></figure>
+          <figure class="media"><img src="./assets/S__23691538.jpg" alt="P3" /><figcaption class="caption">E08：第 19 項備註</figcaption></figure>
+          <figure class="media"><img src="./assets/S__23691625.jpg" alt="P4" /><figcaption class="caption">E11：睿創防水保固</figcaption></figure>
+        </div>
+      </section>
+
+      <section class="card panel" id="table">
+        <div class="card-head">
+          <div class="card-title">
+            <small>Catalog</small>
+            <h2>證據總表</h2>
+          </div>
+          <div class="chip-row">
+            <span class="chip">用途</span>
+            <span class="chip">爭點</span>
+            <span class="chip">提出建議</span>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>代號</th>
+              <th>證據名稱</th>
+              <th>證據用途</th>
+              <th>對應爭點</th>
+              <th>提出建議</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>E01</td><td>第一次鑑定書</td><td>固定漏水位置、窗框與地坪問題</td><td>漏水原因、非地震說、修復範圍</td><td>優先回到原始鑑定書全文</td></tr>
+            <tr><td>E02</td><td>窗框邊空洞</td><td>定位接縫疑似空洞與出水位置</td><td>窗框接縫漏水、水路貫穿</td><td>搭配 E05 影片一起出示</td></tr>
+            <tr><td>E03</td><td>現況四圖</td><td>交代主臥、浴室、壁面發黑與空間關係</td><td>漏水現況、居住受影響</td><td>若找到原始照片，應替換相簿截圖</td></tr>
+            <tr><td>E04</td><td>潮濕蟲與木板拆開</td><td>顯示內部潮濕、黑點與損害擴大</td><td>黴菌潮濕、居住損害</td><td>適合當補充損害證據</td></tr>
+            <tr><td>E05</td><td>噴水穿透影片</td><td>直接證明水路穿透與外側位置</td><td>施工瑕疵、修復必要性</td><td>列為重點證據</td></tr>
+            <tr><td>E06</td><td>紅磚牆切窗與轉角厚度</td><td>呈現異材質轉角工法疑點</td><td>交界高風險、防水包覆與收邊</td><td>很適合放入鑑定提問</td></tr>
+            <tr><td>E07</td><td>窗框與牆面裂縫</td><td>把可見裂縫和漏水點連起來</td><td>接合處是否為漏水點</td><td>與 E02、E05 併用</td></tr>
+            <tr><td>E08</td><td>睿創估價單</td><td>固定第 19 項備註與拆除八折</td><td>承攬範圍、保固範圍</td><td>目前核心攻防材料</td></tr>
+            <tr><td>E09</td><td>阿倫 LINE</td><td>保留前手聯絡與補償脈絡</td><td>前手知悉爭議、和解歷程</td><td>不是漏水主因，但可補充背景</td></tr>
+            <tr><td>E10</td><td>畫圈逐字稿截圖</td><td>輔助辨識你在文字上標記的爭點</td><td>研讀輔助，不是原始證據本體</td><td>不建議單獨當主證</td></tr>
+            <tr><td>E11</td><td>阿倫內容與睿創保固</td><td>固定前手工程內容與後手保固承諾</td><td>兩被告責任銜接</td><td>建議列正式證據</td></tr>
+            <tr><td>E12</td><td>進場樣子與牆面層次</td><td>追問是否拆至見底、是否完整打底</td><td>防水基底是否重做</td><td>若能回找原圖更好</td></tr>
+            <tr><td>E13</td><td>未完工 / 未驗收爭議</td><td>反駁入住與付款被包裝成驗收</td><td>後手誠信、尾款壓力</td><td>屬輔助點打，不直接證明漏水主因</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="card panel" id="notes">
+        <div class="card-head">
+          <div class="card-title">
+            <small>Usage Notes</small>
+            <h2>使用提醒</h2>
+          </div>
+          <div class="chip-row">
+            <span class="chip good">強弱分層</span>
+            <span class="chip warn">不要混用</span>
+          </div>
+        </div>
+        <div class="note-grid">
+          <div class="note-box">
+            <h3>最強的證據類型</h3>
+            <ul>
+              <li>原始影片、原始照片、原始文件掃描。</li>
+              <li>直接能對應書狀原證的材料。</li>
+            </ul>
+          </div>
+          <div class="note-box">
+            <h3>較弱但仍有用</h3>
+            <ul>
+              <li>相簿截圖、文件翻拍、聊天視窗截圖。</li>
+              <li>可作定位、脈絡與輔助，但不要取代原始證物。</li>
+            </ul>
+          </div>
+          <div class="note-box">
+            <h3>提出策略</h3>
+            <ul>
+              <li>先用 E01、E05、E08、E11 固定主戰場。</li>
+              <li>再用 E06、E07、E12 往異材質交界與未拆到底補強。</li>
+            </ul>
+          </div>
+          <div class="note-box">
+            <h3>輔助點打</h3>
+            <ul>
+              <li>E13 的重點是後手誠信與驗收抗辯，不是直接證明漏水源頭。</li>
+              <li>應和時間軸頁的「後手履約誠信爭議」一起讀。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal" id="modal" aria-hidden="true">
+    <button type="button" id="modal-close" aria-label="Close">×</button>
+    <img id="modal-image" alt="Preview" />
+  </div>
+
+  <script>
+    (function () {
+      const modal = document.getElementById("modal");
+      const modalImage = document.getElementById("modal-image");
+      const closeBtn = document.getElementById("modal-close");
+      const images = document.querySelectorAll(".media img");
+
+      function closeModal() {
+        modal.classList.remove("open");
+        modal.setAttribute("aria-hidden", "true");
+        modalImage.removeAttribute("src");
+      }
+
+      images.forEach((img) => {
+        img.addEventListener("click", () => {
+          modalImage.src = img.src;
+          modal.classList.add("open");
+          modal.setAttribute("aria-hidden", "false");
+        });
+      });
+
+      closeBtn.addEventListener("click", closeModal);
+      modal.addEventListener("click", (event) => {
+        if (event.target === modal) closeModal();
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") closeModal();
+      });
+    })();
+  </script>
+</body>
+</html>

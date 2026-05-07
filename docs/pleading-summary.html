@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jenny案 書狀重點整理</title>
+  <style>
+    :root {
+      --bg: #f5efe8;
+      --paper: #fffaf3;
+      --ink: #201814;
+      --muted: #6e6259;
+      --line: #dccdbe;
+      --accent: #9a3412;
+      --accent-2: #7c2d12;
+      --chip: #efe1d0;
+      --good: #31572c;
+      --warn: #92400e;
+      --shadow: 0 14px 34px rgba(75, 52, 37, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top right, rgba(154, 52, 18, 0.08), transparent 24%),
+        linear-gradient(180deg, #f8f2ea 0%, var(--bg) 100%);
+      font-family: "Microsoft JhengHei", "PingFang TC", sans-serif;
+      line-height: 1.72;
+    }
+
+    a { color: var(--accent-2); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .shell {
+      width: min(1280px, calc(100vw - 32px));
+      margin: 24px auto 80px;
+      display: grid;
+      grid-template-columns: 320px minmax(0, 1fr);
+      gap: 20px;
+    }
+
+    .panel {
+      background: rgba(255, 250, 243, 0.88);
+      border: 1px solid rgba(220, 205, 190, 0.85);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 18px;
+      align-self: start;
+      border-radius: 24px;
+      overflow: hidden;
+    }
+
+    .sidebar-head {
+      padding: 22px 22px 18px;
+      background:
+        linear-gradient(145deg, rgba(154, 52, 18, 0.14), rgba(124, 45, 18, 0.04)),
+        var(--paper);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    h1, h2, h3 { margin: 0; line-height: 1.2; }
+    h1 { font-size: 34px; }
+
+    .side-note {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .nav {
+      padding: 12px;
+      max-height: calc(100vh - 230px);
+      overflow: auto;
+    }
+
+    .nav-group {
+      margin-bottom: 16px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.46);
+      overflow: hidden;
+    }
+
+    .nav-title {
+      padding: 12px 14px;
+      font-size: 13px;
+      color: var(--muted);
+      background: rgba(239, 225, 208, 0.55);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav a {
+      display: block;
+      padding: 10px 14px;
+      color: var(--ink);
+      border-top: 1px solid rgba(220, 205, 190, 0.55);
+      font-size: 14px;
+    }
+
+    .nav a:first-of-type { border-top: 0; }
+    .nav a:hover {
+      background: rgba(242, 229, 214, 0.7);
+      text-decoration: none;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .hero {
+      position: relative;
+      border-radius: 28px;
+      padding: 28px;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -56px -72px auto;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(154, 52, 18, 0.2), transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero p {
+      margin: 14px 0 0;
+      max-width: 900px;
+      color: var(--muted);
+    }
+
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .action-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 42px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(154, 52, 18, 0.18);
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--accent-2);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .action-link:hover {
+      text-decoration: none;
+      background: rgba(243, 231, 216, 0.9);
+    }
+
+    .card {
+      border-radius: 24px;
+      padding: 24px;
+    }
+
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 18px;
+      margin-bottom: 16px;
+    }
+
+    .card-title small {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 6px 11px;
+      border-radius: 999px;
+      background: var(--chip);
+      border: 1px solid rgba(154, 52, 18, 0.12);
+      font-size: 13px;
+      color: var(--accent-2);
+      white-space: nowrap;
+    }
+
+    .chip.good {
+      background: rgba(49, 87, 44, 0.1);
+      color: var(--good);
+      border-color: rgba(49, 87, 44, 0.16);
+    }
+
+    .chip.warn {
+      background: rgba(146, 64, 14, 0.12);
+      color: var(--warn);
+      border-color: rgba(146, 64, 14, 0.18);
+    }
+
+    .section-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .note-box {
+      padding: 18px;
+      border-radius: 20px;
+      border: 1px solid rgba(220, 205, 190, 0.85);
+      background: rgba(255, 255, 255, 0.56);
+    }
+
+    .note-box h3 {
+      font-size: 17px;
+      margin-bottom: 10px;
+    }
+
+    .note-box p {
+      margin: 0 0 10px;
+      color: var(--muted);
+    }
+
+    .note-box ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .note-box li { margin: 6px 0; }
+
+    @media (max-width: 1100px) {
+      .shell { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+    }
+
+    @media (max-width: 760px) {
+      .section-grid { grid-template-columns: 1fr; }
+      .card-head { flex-direction: column; }
+      h1 { font-size: 29px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar panel">
+      <div class="sidebar-head">
+        <span class="eyebrow">Pleading Summary</span>
+        <h2>書狀重點整理</h2>
+        <div class="side-note">
+          不是完整書狀原文，而是把目前訴訟主張的骨架濃縮成閱讀版。
+        </div>
+      </div>
+      <nav class="nav">
+        <div class="nav-group">
+          <div class="nav-title">總覽</div>
+          <a href="#overview">頁面說明</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">主張骨架</div>
+          <a href="#scope">承攬 / 保固範圍</a>
+          <a href="#period">瑕疵發現期間</a>
+          <a href="#earthquake">地震抗辯</a>
+          <a href="#appraisal">鑑定事項</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">延伸閱讀</div>
+          <a href="./timeline.html" target="_blank" rel="noopener noreferrer">時間軸 + 爭點</a>
+          <a href="./index.html" target="_blank" rel="noopener noreferrer">證據閱讀版</a>
+          <a href="./evidence-catalog.html" target="_blank" rel="noopener noreferrer">證據目錄頁</a>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <section class="hero panel" id="overview">
+        <span class="eyebrow">Jenny Case / Pleading Summary</span>
+        <h1>書狀重點整理</h1>
+        <p>
+          這一頁把 [民事準備(一)暨聲請調查證據狀] 的重點換成較好閱讀的版本。
+          目的是讓相關人快速看懂目前主要在打什麼，不必直接打開 GitHub 上的 Markdown 原稿。
+        </p>
+        <div class="action-row">
+          <a class="action-link" href="./timeline.html" target="_blank" rel="noopener noreferrer">回時間軸 + 爭點</a>
+          <a class="action-link" href="./index.html" target="_blank" rel="noopener noreferrer">回證據閱讀版</a>
+        </div>
+      </section>
+
+      <section class="card panel" id="scope">
+        <div class="card-head">
+          <div class="card-title">
+            <small>Point 1</small>
+            <h2>承攬 / 保固範圍主張</h2>
+          </div>
+          <div class="chip-row">
+            <span class="chip good">原證4</span>
+            <span class="chip good">原證5</span>
+            <span class="chip good">原證11</span>
+          </div>
+        </div>
+        <div class="section-grid">
+          <div class="note-box">
+            <h3>核心主張</h3>
+            <ul>
+              <li>前手吳政倫的承攬範圍本就包括主臥浴室隔間、地磚、防水與相關泥作工程。</li>
+              <li>後手睿創接手時，曾表示會重做防水、處理先前漏水問題，並出具 10 年防水保固。</li>
+              <li>因此，不能只因「新砌隔間牆打底工資已扣除」就全面切斷睿創的保固責任。</li>
+            </ul>
+          </div>
+          <div class="note-box">
+            <h3>對應證據</h3>
+            <ul>
+              <li>E01 第一次鑑定書</li>
+              <li>E08 睿創估價單</li>
+              <li>E11 阿倫工程內容與睿創保固</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="card panel" id="period">
+        <div class="card-head">
+          <div class="card-title">
+            <small>Point 2</small>
+            <h2>瑕疵發現期間主張</h2>
+          </div>
+          <div class="chip-row">
+            <span class="chip good">民法 499</span>
+            <span class="chip">2024-01-28</span>
+          </div>
+        </div>
+        <div class="section-grid">
+          <div class="note-box">
+            <h3>核心主張</h3>
+            <ul>
+              <li>本件工程已附合於建築物，應有民法第 499 條 5 年瑕疵發現期間之適用。</li>
+              <li>即使退一步看，原告於 2024-01-28 發現漏水，2024-11-29 起訴，也未逾越一般期間。</li>
+            </ul>
+          </div>
+          <div class="note-box">
+            <h3>用途</h3>
+            <p>主要是先擋掉對方若主張「太晚發現、太晚起訴」的程序型抗辯，讓法院能進到實體漏水責任判斷。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card panel" id="earthquake">
+        <div class="card-head">
+          <div class="card-title">
+            <small>Point 3</small>
+            <h2>地震抗辯主張</h2>
+          </div>
+          <div class="chip-row">
+            <span class="chip warn">對方抗辯</span>
+            <span class="chip good">原證11</span>
+          </div>
+        </div>
+        <div class="section-grid">
+          <div class="note-box">
+            <h3>核心主張</h3>
+            <ul>
+              <li>對方稱漏水來自 0403 地震造成裂縫，但未依法提出足夠舉證。</li>
+              <li>現有材料反而指向主臥浴室地坪、門檻、窗框接縫與交界處理缺失。</li>
+            </ul>
+          </div>
+          <div class="note-box">
+            <h3>對應證據</h3>
+            <ul>
+              <li>E01 第一次鑑定書</li>
+              <li>E02 窗框邊空洞</li>
+              <li>E05 噴水穿透影片</li>
+              <li>E06 / E07 異材質交界與裂縫照片</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="card panel" id="appraisal">
+        <div class="card-head">
+          <div class="card-title">
+            <small>Point 4</small>
+            <h2>鑑定事項主張</h2>
+          </div>
+          <div class="chip-row">
+            <span class="chip good">漏水原因</span>
+            <span class="chip good">修復方法</span>
+            <span class="chip good">修復期間可住性</span>
+          </div>
+        </div>
+        <div class="section-grid">
+          <div class="note-box">
+            <h3>目前主張方向</h3>
+            <ul>
+              <li>是否有滲漏水、位置在哪裡、源頭為何。</li>
+              <li>若要修復，方法、項目、費用與期間為何。</li>
+              <li>修復期間能否正常居住，或是否必須另覓住處。</li>
+            </ul>
+          </div>
+          <div class="note-box">
+            <h3>還應補問的技術點</h3>
+            <ul>
+              <li>紅磚牆 / 原牆 / 氣密窗交界之異材質轉角工法。</li>
+              <li>底層是否應拆到底重做。</li>
+              <li>木地板浸潤與漏水路徑的因果關係。</li>
+              <li>前手本體瑕疵與後手防水收邊瑕疵如何切分。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

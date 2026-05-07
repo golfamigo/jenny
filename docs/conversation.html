@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jenny案 對話整理閱讀頁</title>
+  <style>
+    :root {
+      --bg: #f4efe6;
+      --paper: #fffaf2;
+      --ink: #1f1a17;
+      --muted: #6f655c;
+      --line: #d8cbbd;
+      --accent: #9a3412;
+      --accent-2: #7c2d12;
+      --chip: #efe0cf;
+      --good: #31572c;
+      --warn: #92400e;
+      --shadow: 0 12px 30px rgba(71, 49, 34, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top left, rgba(154, 52, 18, 0.08), transparent 28%),
+        linear-gradient(180deg, #f7f1e8 0%, var(--bg) 100%);
+      color: var(--ink);
+      font-family: "Microsoft JhengHei", "PingFang TC", sans-serif;
+      line-height: 1.72;
+    }
+
+    a { color: var(--accent-2); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .shell {
+      width: min(1380px, calc(100vw - 32px));
+      margin: 24px auto 80px;
+      display: grid;
+      grid-template-columns: 320px minmax(0, 1fr);
+      gap: 20px;
+    }
+
+    .panel {
+      background: rgba(255, 250, 242, 0.88);
+      border: 1px solid rgba(216, 203, 189, 0.85);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 18px;
+      align-self: start;
+      border-radius: 22px;
+      overflow: hidden;
+    }
+
+    .sidebar-head {
+      padding: 22px 22px 18px;
+      background:
+        linear-gradient(135deg, rgba(154, 52, 18, 0.14), rgba(124, 45, 18, 0.04)),
+        var(--paper);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    h1, h2, h3 { margin: 0; line-height: 1.2; }
+    h1 { font-size: 32px; }
+
+    .side-note {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .nav {
+      padding: 12px;
+      max-height: calc(100vh - 230px);
+      overflow: auto;
+    }
+
+    .nav-group {
+      margin-bottom: 16px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.46);
+      overflow: hidden;
+    }
+
+    .nav-title {
+      padding: 12px 14px;
+      font-size: 13px;
+      color: var(--muted);
+      background: rgba(239, 224, 207, 0.55);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav a {
+      display: block;
+      padding: 10px 14px;
+      color: var(--ink);
+      border-top: 1px solid rgba(216, 203, 189, 0.55);
+      font-size: 14px;
+    }
+
+    .nav a:first-of-type { border-top: 0; }
+    .nav a:hover {
+      background: rgba(243, 231, 216, 0.65);
+      text-decoration: none;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .hero {
+      border-radius: 26px;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -40px -70px auto;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(154, 52, 18, 0.18), transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero p {
+      margin: 14px 0 0;
+      max-width: 880px;
+      color: var(--muted);
+    }
+
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .action-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 42px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(154, 52, 18, 0.18);
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--accent-2);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .action-link:hover {
+      text-decoration: none;
+      background: rgba(243, 231, 216, 0.9);
+    }
+
+    .hero-grid {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .metric {
+      border-radius: 18px;
+      padding: 16px 18px;
+      background: rgba(255, 255, 255, 0.65);
+      border: 1px solid rgba(216, 203, 189, 0.85);
+    }
+
+    .metric .label {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .metric .value {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .card {
+      border-radius: 24px;
+      padding: 24px;
+    }
+
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 18px;
+      margin-bottom: 16px;
+    }
+
+    .card-title small {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 6px 11px;
+      border-radius: 999px;
+      background: var(--chip);
+      border: 1px solid rgba(154, 52, 18, 0.12);
+      font-size: 13px;
+      color: var(--accent-2);
+      white-space: nowrap;
+    }
+
+    .chip.good {
+      background: rgba(49, 87, 44, 0.1);
+      color: var(--good);
+      border-color: rgba(49, 87, 44, 0.16);
+    }
+
+    .chip.warn {
+      background: rgba(146, 64, 14, 0.12);
+      color: var(--warn);
+      border-color: rgba(146, 64, 14, 0.18);
+    }
+
+    .entry-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .note-box {
+      padding: 16px 18px;
+      border-radius: 18px;
+      border: 1px solid rgba(216, 203, 189, 0.85);
+      background: rgba(255, 255, 255, 0.55);
+    }
+
+    .note-box h3 {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .note-box ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .note-box li { margin: 6px 0; }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .gallery.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+    .media {
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(216, 203, 189, 0.95);
+      background: #fff;
+      box-shadow: 0 10px 22px rgba(71, 49, 34, 0.08);
+    }
+
+    .media img,
+    .media video {
+      display: block;
+      width: 100%;
+      background: #ede4d8;
+      cursor: zoom-in;
+    }
+
+    .media video { cursor: default; }
+
+    .caption {
+      padding: 10px 12px 12px;
+      font-size: 13px;
+      color: var(--muted);
+      border-top: 1px solid rgba(216, 203, 189, 0.65);
+      background: rgba(255, 250, 242, 0.75);
+    }
+
+    .caption a { font-weight: 600; }
+
+    .meta-line {
+      margin-bottom: 14px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .footer-box {
+      border-radius: 24px;
+      padding: 22px 24px;
+    }
+
+    .footer-box p {
+      margin: 10px 0 0;
+      color: var(--muted);
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(20, 14, 10, 0.82);
+      padding: 28px;
+      z-index: 999;
+    }
+
+    .modal.open { display: flex; }
+
+    .modal img {
+      max-width: min(92vw, 1600px);
+      max-height: 90vh;
+      border-radius: 18px;
+      box-shadow: 0 18px 60px rgba(0, 0, 0, 0.35);
+      background: white;
+    }
+
+    .modal button {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      border: 0;
+      border-radius: 999px;
+      width: 42px;
+      height: 42px;
+      background: rgba(255, 255, 255, 0.12);
+      color: white;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 1100px) {
+      .shell { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+      .hero-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 760px) {
+      .hero-grid,
+      .entry-grid,
+      .gallery,
+      .gallery.two {
+        grid-template-columns: 1fr;
+      }
+
+      .card-head { flex-direction: column; }
+      h1 { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar panel">
+      <div class="sidebar-head">
+        <span class="eyebrow">Conversation Reader</span>
+        <h2>案件相關對話整理</h2>
+        <div class="side-note">
+          這份版本只保留和漏水案有關的對話摘錄。<br />
+          已去掉單純安撫、陪同安排與低資訊量聊天。
+        </div>
+      </div>
+      <nav class="nav">
+        <div class="nav-group">
+          <div class="nav-title">總覽</div>
+          <a href="#overview">頁面說明</a>
+          <a href="#principle">整理原則</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">時序段落</div>
+          <a href="#day1">2026-05-05</a>
+          <a href="#morning">2026-05-06 上午</a>
+          <a href="#night">2026-05-06 晚上</a>
+          <a href="#supplement">後手補充</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">延伸閱讀</div>
+          <a href="./index.html" target="_blank" rel="noopener noreferrer">證據閱讀版</a>
+          <a href="./evidence-catalog.html" target="_blank" rel="noopener noreferrer">證據目錄頁</a>
+          <a href="./timeline.html" target="_blank" rel="noopener noreferrer">時間軸 + 爭點</a>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <section class="hero panel" id="overview">
+        <span class="eyebrow">Jenny Case / Conversation Digest</span>
+        <h1>對話整理閱讀頁</h1>
+        <p>
+          這不是 LINE 全文，也不是原始工作底稿。這一頁只摘出能補強漏水原因、承攬範圍、
+          保固、損害與程序安排的對話，並把對應圖片放回同一頁方便閱讀。
+        </p>
+        <div class="action-row">
+          <a class="action-link" href="./index.html" target="_blank" rel="noopener noreferrer">回證據閱讀版</a>
+          <a class="action-link" href="./evidence-catalog.html" target="_blank" rel="noopener noreferrer">看證據目錄</a>
+          <a class="action-link" href="./timeline.html" target="_blank" rel="noopener noreferrer">看時間軸</a>
+        </div>
+        <div class="hero-grid">
+          <div class="metric"><span class="label">案件有用段落</span><span class="value">11</span></div>
+          <div class="metric"><span class="label">圖片 / 影片</span><span class="value">31+</span></div>
+          <div class="metric"><span class="label">重點主題</span><span class="value">5</span></div>
+          <div class="metric"><span class="label">排除無關聊天</span><span class="value">已處理</span></div>
+        </div>
+      </section>
+
+      <section class="card panel" id="principle">
+        <div class="card-head">
+          <div class="card-title">
+            <small>Editing Principle</small>
+            <h2>整理原則</h2>
+          </div>
+          <div class="chip-row">
+            <span class="chip good">只留案件事實</span>
+            <span class="chip good">站內圖片可讀</span>
+            <span class="chip warn">不等於原始證物全文</span>
+          </div>
+        </div>
+        <div class="entry-grid">
+          <div class="note-box">
+            <h3>保留什麼</h3>
+            <ul>
+              <li>和漏水位置、工法、接縫、損害、保固、催款、鑑定有關的對話。</li>
+              <li>能對應圖片、影片、估價單、保固書與鑑定報告的重點句。</li>
+            </ul>
+          </div>
+          <div class="note-box">
+            <h3>去掉什麼</h3>
+            <ul>
+              <li>單純安撫、陪同安排、情緒性來回與對案情沒有新增資訊的句子。</li>
+              <li>只為聊天銜接存在、但對事實認定幫助很低的語句。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="card panel" id="day1">
+        <div class="card-head">
+          <div class="card-title">
+            <small>2026-05-05</small>
+            <h2>第一次鑑定、窗框空洞、現況照片</h2>
+          </div>
+          <div class="chip-row">
+            <span class="chip">E01</span>
+            <span class="chip">E02</span>
+            <span class="chip">E03</span>
+          </div>
+        </div>
+
+        <div class="meta-line">主題：先前鑑定已指出施工不良疑點，並開始聚焦窗框接縫與現況範圍。</div>
+
+        <div class="entry-grid">
+          <div class="note-box">
+            <h3>21:05-21:17 第一次鑑定書</h3>
+            <ul>
+              <li>Heictor 指出鑑定書第 24 點第 (2)、第 (3) 小點已帶出施工不良疑點。</li>
+              <li>Jenny 回答這份報告來自技師公會。</li>
+              <li>用途：把漏水爭點先拉回既有鑑定內容，而不是只靠主觀描述。</li>
+            </ul>
+          </div>
+          <div class="note-box">
+            <h3>21:53-21:54 窗框邊空洞</h3>
+            <ul>
+              <li>Jenny 說明窗框邊空洞雖不算肉眼明顯，但拿蓮蓬頭噴 2 秒就會出水。</li>
+              <li>用途：把「窗框接縫」從抽象懷疑變成可測試、可定位的具體漏水點。</li>
+            </ul>
+          </div>
+          <div class="note-box">
+            <h3>21:59-22:00 現況四圖</h3>
+            <ul>
+              <li>這組四圖用來交代主臥、浴室、壁面發黑與空間關係。</li>
+              <li>用途：補強漏水現況、使用受影響範圍與技師公會到場前的現場基礎。</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="gallery">
+          <figure class="media"><img src="./assets/S__23658585.jpg" alt="D1-1" /><figcaption class="caption">第一次鑑定：手繪示意</figcaption></figure>
+          <figure class="media"><img src="./assets/S__23658587_0.jpg" alt="D1-2" /><figcaption class="caption">第一次鑑定：內頁 1</figcaption></figure>
+          <figure class="media"><img src="./assets/S__23658588_0.jpg" alt="D1-3" /><figcaption class="caption">第一次鑑定：內頁 2</figcaption></figure>
+          <figure class="media"><img src="./assets/S__23658589_0.jpg" alt="D1-4" /><figcaption class="caption">第一次鑑定：內頁 3</figcaption></figure>
+          <figure class="media"><img src="./assets/S__23658590_0.jpg" alt="D1-5" /><figcaption class="caption">第一次鑑定：內頁 4</figcaption></figure>
+          <figure class="media"><img src="./assets/S__23658591_0.jpg" alt="D1-6" /><figcaption class="caption">第一次鑑定：內頁 5</figcaption></figure>
+          <figure class="media"><img src="./assets/S__23658592_0.jpg" alt="D1-7" /><figcaption class="caption">第一次鑑定：內頁 6</figcaption></figure>
+          <figure class="media"><img src="./assets/S__23658702.jpg" alt="D1-8" /><figcaption class="caption">窗框邊空洞位置</figcaption></figure>
+          <figure class="media"><img src="./assets/S__23658735_0.jpg" alt="D1-9" /><figcaption class="caption">現況圖 1</figcaption></figure>
+          <figure class="media"><img src="./assets/S__23658736_0.jpg" alt="D1-10" /><figcaption class="caption">現況圖 2</figcaption></figure>
+          <figure class="media"><img src="./assets/S__23658737_0.jpg" alt="D1-11" /><figcaption class="caption">現況圖 3</figcaption></figure>
+          <figure class="media"><img src="./assets/S__23658738_0.jpg" alt="D1-12" /><figcaption class="caption">現況圖 4</figcaption></figure>
+        </div>
+      </section>
+
+      <section class="card panel" id="morning">
+        <div class="card-head">
+          <div class="card-title">
+            <small>2026-05-06 上午</small>
+            <h2>潮濕損害、噴水穿透、紅磚牆切窗</h2>
+          </div>
+          <div class="chip-row">
+            <span class="chip">E04</span>
+            <span class="chip good">E05</span>
+            <span class="chip">E06</span>
+          </div>
+        </div>
+
+        <div class="meta-line">主題：從損害現象一路推進到水路貫穿與異材質交界工法。</div>
+
+        <div class="entry-grid">
+          <div class="note-box">
+            <h3>10:47-10:49 潮濕蟲與拆開木板</h3>
+            <ul>
+              <li>Jenny 表示除蟲公司辨識該飛蟲為潮濕蟲。</li>
+              <li>拆開牆壁木板後可見黑點、受潮與內部異常。</li>
+              <li>用途：補強漏水已造成居住品質與材料層內部損害。</li>
+            </ul>
+          </div>
+          <div class="note-box">
+            <h3>10:55-10:59 噴水直接穿到臥室</h3>
+            <ul>
+              <li>Jenny 說明從廁所噴水會直接穿到臥室，且該縫非常誇張。</li>
+              <li>影片與外側照片都指向這不是小滲水，而是明確水路貫穿。</li>
+              <li>用途：這是最直觀的動態證據之一。</li>
+            </ul>
+          </div>
+          <div class="note-box">
+            <h3>11:07-11:08 紅磚牆切到窗戶、轉角厚度</h3>
+            <ul>
+              <li>Jenny 指出紅磚牆直接切到窗戶，並提供側面轉角厚度照片。</li>
+              <li>Heictor 回到技術點：泥作與鋁窗膨脹係數不同，本來就是高風險交界。</li>
+              <li>用途：後續鑑定應明問異材質轉角的正確工法與補強需求。</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="gallery">
+          <figure class="media"><img src="./assets/S__23683317_0.jpg" alt="M-1" /><figcaption class="caption">木板拆開後 1</figcaption></figure>
+          <figure class="media"><img src="./assets/S__23683318_0.jpg" alt="M-2" /><figcaption class="caption">木板拆開後 2</figcaption></figure>
+          <figure class="media"><img src="./assets/S__23683319_0.jpg" alt="M-3" /><figcaption class="caption">木板拆開後 3</figcaption></figure>
+        </div>
+
+        <div class="gallery two" style="margin-top:12px;">
+          <figure class="media">
+            <video controls preload="metadata" playsinline>
+              <source src="./assets/IMG_4367.mp4" type="video/mp4" />
+            </video>
+            <figcaption class="caption">噴水後穿透情形。<a href="./assets/IMG_4367.mp4" target="_blank" rel="noopener noreferrer">直接開啟 MP4</a></figcaption>
+          </figure>
+          <figure class="media"><img src="./assets/S__23691795.jpg" alt="M-4" /><figcaption class="caption">外側位置補充照片</figcaption></figure>
+        </div>
+
+        <div class="gallery two" style="margin-top:12px;">
+          <figure class="media"><img src="./assets/S__23683399.jpg" alt="M-5" /><figcaption class="caption">紅磚牆切到窗戶</figcaption></figure>
+          <figure class="media"><img src="./assets/S__23683400.jpg" alt="M-6" /><figcaption class="caption">側面轉角厚度</figcaption></figure>
+        </div>
+      </section>
+
+      <section class="card panel" id="night">
+        <div class="card-head">
+          <div class="card-title">
+            <small>2026-05-06 晚上</small>
+            <h2>裂縫、估價單、保固與進場現況</h2>
+          </div>
+          <div class="chip-row">
+            <span class="chip">E07</span>
+            <span class="chip good">E08</span>
+            <span class="chip">E09</span>
+            <span class="chip">E11</span>
+            <span class="chip">E12</span>
+          </div>
+        </div>
+
+        <div class="entry-grid">
+          <div class="note-box">
+            <h3>21:23 接合處裂縫</h3>
+            <ul>
+              <li>Jenny 明確指出那條明顯裂縫就是窗框與牆接合處。</li>
+              <li>用途：把可見裂縫位置和前面噴水出水點連起來。</li>
+            </ul>
+          </div>
+          <div class="note-box">
+            <h3>21:37-21:46 第 19 項備註與拆除八折</h3>
+            <ul>
+              <li>爭議集中在「已扣除新砌隔間牆」備註能否讓後手免責。</li>
+              <li>Jenny 同時抓到錄音核心句：對方曾說不挖掉就沒辦法保固。</li>
+              <li>用途：直接對應承攬範圍與保固範圍攻防。</li>
+            </ul>
+          </div>
+          <div class="note-box">
+            <h3>21:56 阿倫再加 55,000</h3>
+            <ul>
+              <li>這組主要是前手聯絡與和解脈絡，不是漏水主因證據。</li>
+              <li>用途：保留前手知悉爭議與補償討論軌跡。</li>
+            </ul>
+          </div>
+          <div class="note-box">
+            <h3>22:27-22:35 前手粉光售價、後手保固與進場樣子</h3>
+            <ul>
+              <li>阿倫的粉光售價與睿創防水保固合約，是前後手責任銜接關鍵。</li>
+              <li>進場照片則拿來追問是否真的拆至見底、是否有完整打底粉光。</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="gallery">
+          <figure class="media"><img src="./assets/S__23691505.jpg" alt="N-1" /><figcaption class="caption">窗框與牆接合處裂縫</figcaption></figure>
+          <figure class="media"><img src="./assets/S__23691532.jpg" alt="N-2" /><figcaption class="caption">聲請狀紅線頁</figcaption></figure>
+          <figure class="media"><img src="./assets/S__23691538.jpg" alt="N-3" /><figcaption class="caption">估價單第 19 項備註</figcaption></figure>
+          <figure class="media"><img src="./assets/S__23691543.jpg" alt="N-4" /><figcaption class="caption">拆除工程八折頁</figcaption></figure>
+          <figure class="media"><img src="./assets/S__23691566.jpg" alt="N-5" /><figcaption class="caption">阿倫 LINE 截圖</figcaption></figure>
+          <figure class="media"><img src="./assets/S__23691624.jpg" alt="N-6" /><figcaption class="caption">阿倫粉光售價</figcaption></figure>
+          <figure class="media"><img src="./assets/S__23691625.jpg" alt="N-7" /><figcaption class="caption">睿創防水保固合約</figcaption></figure>
+          <figure class="media"><img src="./assets/S__23691636.jpg" alt="N-8" /><figcaption class="caption">後手進場現況</figcaption></figure>
+          <figure class="media"><img src="./assets/S__23658824_0.jpg" alt="N-9" /><figcaption class="caption">拼貼對應 1</figcaption></figure>
+          <figure class="media"><img src="./assets/S__23658825_0.jpg" alt="N-10" /><figcaption class="caption">拼貼對應 2</figcaption></figure>
+          <figure class="media"><img src="./assets/S__23658826_0.jpg" alt="N-11" /><figcaption class="caption">拼貼對應 3</figcaption></figure>
+          <figure class="media"><img src="./assets/S__23658827_0.jpg" alt="N-12" /><figcaption class="caption">拼貼對應 4</figcaption></figure>
+          <figure class="media"><img src="./assets/S__23658829.jpg" alt="N-13" /><figcaption class="caption">單張現場圖</figcaption></figure>
+        </div>
+      </section>
+
+      <section class="card panel" id="supplement">
+        <div class="card-head">
+          <div class="card-title">
+            <small>Supplement</small>
+            <h2>後手補充：未完工、未驗收與尾款壓力</h2>
+          </div>
+          <div class="chip-row">
+            <span class="chip warn">輔助點打</span>
+            <span class="chip">不直接證明漏水主因</span>
+            <span class="chip good">反駁入住 = 驗收</span>
+          </div>
+        </div>
+        <div class="entry-grid">
+          <div class="note-box">
+            <h3>案件有用事實</h3>
+            <ul>
+              <li>2023-08-01 搬入是為節省房租，不是正式驗收。</li>
+              <li>搬入時仍有多項工程未完成，到 2023-10 前後仍未真正完工。</li>
+              <li>2023-12-01 付款背景包含未驗收、瑕疵未排除與持續催款壓力。</li>
+              <li>事後仍出現「工務還沒跟你驗收嗎」的說法，反證驗收程序原本存在。</li>
+            </ul>
+          </div>
+          <div class="note-box">
+            <h3>用途</h3>
+            <ul>
+              <li>反駁後手若主張「搬進去 + 付尾款 = 驗收完成」。</li>
+              <li>輔助法官從誠信角度審視後手其他抗辯，而不是直接證明漏水主因。</li>
+            </ul>
+          </div>
+        </div>
+        <div class="gallery two">
+          <figure class="media"><img src="./assets/Image-1703.png" alt="S-1" /><figcaption class="caption">未完工事項手寫輔助圖</figcaption></figure>
+        </div>
+      </section>
+
+      <section class="footer-box panel">
+        <span class="eyebrow">Note</span>
+        <h2>補充說明</h2>
+        <p>這一頁是對外閱讀版，不等於原始 LINE 全文。若未來需要對卷或比對原始上下文，仍應回到原始匯出檔與手機截圖。</p>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal" id="modal" aria-hidden="true">
+    <button type="button" id="modal-close" aria-label="Close">×</button>
+    <img id="modal-image" alt="Preview" />
+  </div>
+
+  <script>
+    (function () {
+      const modal = document.getElementById("modal");
+      const modalImage = document.getElementById("modal-image");
+      const closeBtn = document.getElementById("modal-close");
+      const images = document.querySelectorAll(".media img");
+
+      function closeModal() {
+        modal.classList.remove("open");
+        modal.setAttribute("aria-hidden", "true");
+        modalImage.removeAttribute("src");
+      }
+
+      images.forEach((img) => {
+        img.addEventListener("click", () => {
+          modalImage.src = img.src;
+          modal.classList.add("open");
+          modal.setAttribute("aria-hidden", "false");
+        });
+      });
+
+      closeBtn.addEventListener("click", closeModal);
+      modal.addEventListener("click", (event) => {
+        if (event.target === modal) closeModal();
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") closeModal();
+      });
+    })();
+  </script>
+</body>
+</html>
