@@ -329,6 +329,47 @@
       margin-bottom: 8px;
     }
 
+    .event-main {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .event-main h3 {
+      margin: 0;
+    }
+
+    .event-tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 28px;
+      width: fit-content;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .event-tag.front {
+      background: rgba(146, 64, 14, 0.12);
+      color: var(--warn);
+      border: 1px solid rgba(146, 64, 14, 0.18);
+    }
+
+    .event-tag.back {
+      background: rgba(29, 78, 216, 0.1);
+      color: var(--info);
+      border: 1px solid rgba(29, 78, 216, 0.16);
+    }
+
+    .event-tag.procedure {
+      background: rgba(49, 87, 44, 0.1);
+      color: var(--good);
+      border: 1px solid rgba(49, 87, 44, 0.16);
+    }
+
     .event-date {
       font-size: 13px;
       color: var(--muted);
@@ -461,12 +502,14 @@
         <div class="nav-group">
           <div class="nav-title">時間軸</div>
           <a href="#timeline-contract">施工與換手</a>
+          <a href="#timeline-acceptance">入住、未驗收與尾款壓力</a>
           <a href="#timeline-defect">發現漏水與擴大</a>
           <a href="#timeline-litigation">訴訟與鑑定程序</a>
         </div>
         <div class="nav-group">
           <div class="nav-title">爭點</div>
           <a href="#issues">核心爭點清單</a>
+          <a href="#credibility">後手誠信輔助點</a>
           <a href="#evidence-map">關鍵證據對應</a>
         </div>
         <div class="nav-group">
@@ -482,7 +525,7 @@
         <span class="eyebrow">Jenny Case / Timeline & Issues</span>
         <h1>時間軸 + 爭點清單</h1>
         <p>
-          這份版本把案件拆成兩條線看：一條是「事情怎麼發生到現在」，另一條是「法院最後要判哪些點」。
+          這份版本把案件拆成三條線看：前手工程、後手履約，以及法院程序。
           如果你要跟律師、家人或協助者快速同步，先看這頁會比直接翻證據更快。
         </p>
         <div class="action-row">
@@ -493,11 +536,11 @@
         <div class="hero-grid">
           <div class="metric">
             <span class="label">可定位的重要節點</span>
-            <span class="value">11</span>
+            <span class="value">17</span>
           </div>
           <div class="metric">
             <span class="label">核心爭點</span>
-            <span class="value">5</span>
+            <span class="value">6</span>
           </div>
           <div class="metric">
             <span class="label">優先證據</span>
@@ -557,7 +600,10 @@
         <div class="timeline">
           <article class="event">
             <div class="event-head">
-              <h3>前手施工 19 天內漏水三次，原告要求退場</h3>
+              <div class="event-main">
+                <span class="event-tag front">前手</span>
+                <h3>前手施工 19 天內漏水三次，原告要求退場</h3>
+              </div>
               <span class="event-date">時間未明確記至日，依對話為最早階段</span>
             </div>
             <p>依 LINE 整理，原告先找親戚承作裝潢與紅磚牆工程，施工僅 19 天即在不同位置漏水三次，因此要求其離場。</p>
@@ -566,7 +612,10 @@
 
           <article class="event">
             <div class="event-head">
-              <h3>2023-02-05 睿創表示「為了保險還是會再做一次」防水</h3>
+              <div class="event-main">
+                <span class="event-tag back">後手</span>
+                <h3>2023-02-05 睿創表示「為了保險還是會再做一次」防水</h3>
+              </div>
               <span class="event-date">書狀載明：112年2月5日</span>
             </div>
             <p>書狀記載雙方對話中，睿創明白表示即使前手已修，也會自己重做一次防水，因為「不是我們做的，長期不敢承擔」。</p>
@@ -575,7 +624,10 @@
 
           <article class="event">
             <div class="event-head">
-              <h3>2023-02-13 睿創再次表示防水層本來就會重做</h3>
+              <div class="event-main">
+                <span class="event-tag back">後手</span>
+                <h3>2023-02-13 睿創再次表示防水層本來就會重做</h3>
+              </div>
               <span class="event-date">書狀載明：112年2月13日</span>
             </div>
             <p>原告擔心試水造成樓下風險時，睿創回覆「我們本來防水層就會再做一次」、「最後還是會重新施作」。</p>
@@ -584,7 +636,10 @@
 
           <article class="event">
             <div class="event-head">
-              <h3>2023-02 下旬 前手吳政倫合意解約退場</h3>
+              <div class="event-main">
+                <span class="event-tag front">前手</span>
+                <h3>2023-02 下旬 前手吳政倫合意解約退場</h3>
+              </div>
               <span class="event-date">書狀載明：112年2月底前後</span>
             </div>
             <p>書狀表示原告約於 2023 年 2 月底與前手合意解約，於 2023-03-11 前交還房屋。</p>
@@ -593,7 +648,10 @@
 
           <article class="event">
             <div class="event-head">
-              <h3>2023-03-11 與睿創簽約，並出具防水保固</h3>
+              <div class="event-main">
+                <span class="event-tag back">後手</span>
+                <h3>2023-03-11 與睿創簽約，並出具防水保固</h3>
+              </div>
               <span class="event-date">書狀載明：112年3月11日</span>
             </div>
             <p>依書狀與證據，睿創接手後承作主浴室壁面、地面拆除、防水、貼磚等項目，並另出具 10 年防水保固切結。</p>
@@ -602,10 +660,85 @@
         </div>
       </section>
 
-      <section class="card panel" id="timeline-defect">
+      <section class="card panel" id="timeline-acceptance">
         <div class="card-head">
           <div class="card-title">
             <small>Timeline II</small>
+            <h2>後手：入住、未驗收與尾款壓力</h2>
+          </div>
+          <div class="chip-row">
+            <span class="chip info">後手履約</span>
+            <span class="chip warn">未正式驗收</span>
+            <span class="chip warn">尾款爭議</span>
+          </div>
+        </div>
+        <div class="timeline">
+          <article class="event">
+            <div class="event-head">
+              <div class="event-main">
+                <span class="event-tag back">後手</span>
+                <h3>2023-03-31 後手進場施作</h3>
+              </div>
+              <span class="event-date">依 1290 行後新增對話整理</span>
+            </div>
+            <p>新增對話中，原告說明後手睿創約於 2023-03-31 進場，接續前手退場後的裝修與防水相關工程。</p>
+            <div class="sub">意義：後手的履約責任、驗收程序與尾款爭議，都應從這個進場節點往後看。</div>
+          </article>
+
+          <article class="event">
+            <div class="event-head">
+              <div class="event-main">
+                <span class="event-tag back">後手</span>
+                <h3>2023-08-01 因房租壓力先搬入，但非正式驗收</h3>
+              </div>
+              <span class="event-date">依 1290 行後新增對話整理</span>
+            </div>
+            <p>原告表示當時很多工程仍未完成，之所以先搬入系爭房屋，是為節省房租先行居住，並非正式驗收完成之表示。</p>
+            <div class="sub">意義：入住事實不能直接等同工程已完工、驗收合格或瑕疵不存在。</div>
+          </article>
+
+          <article class="event">
+            <div class="event-head">
+              <div class="event-main">
+                <span class="event-tag back">後手</span>
+                <h3>2023-10 前後工程未完，卻已催付尾款</h3>
+              </div>
+              <span class="event-date">依 1290 行後新增對話整理</span>
+            </div>
+            <p>新增對話指出，至 2023 年 10 月前後工程仍未全部完成，且另有工務自行記載的未完工事項，但被告法代已以入住事實為由催付尾款。</p>
+            <div class="sub">意義：此節點主要用來反駁「入住 = 驗收完成」的推論。</div>
+          </article>
+
+          <article class="event">
+            <div class="event-head">
+              <div class="event-main">
+                <span class="event-tag back">後手</span>
+                <h3>2023-12-01 在未正式驗收下支付尾款</h3>
+              </div>
+              <span class="event-date">依新增對話自述日期</span>
+            </div>
+            <p>原告表示尾款支付時，工程尚未經正式驗收，且木地板等瑕疵處理仍與付款條件相互連結，因此付款背景並非單純驗收合格後的結案付款。</p>
+            <div class="sub">意義：付款背景不足以直接推論原告已承認工程完成、品質無瑕疵或放棄後續權利。</div>
+          </article>
+
+          <article class="event">
+            <div class="event-head">
+              <div class="event-main">
+                <span class="event-tag back">後手</span>
+                <h3>2024-08 被告仍稱「工務還沒跟你驗收嗎」</h3>
+              </div>
+              <span class="event-date">依新增對話整理</span>
+            </div>
+            <p>原告表示其事後詢問是否存在驗收程序時，被告法代回稱「工務還沒跟你驗收嗎」，顯示被告自己也知道工程本應另有正式驗收程序。</p>
+            <div class="sub">意義：這可反向說明原告入住及付款，均不宜被逕自包裝為正式驗收完成。</div>
+          </article>
+        </div>
+      </section>
+
+      <section class="card panel" id="timeline-defect">
+        <div class="card-head">
+          <div class="card-title">
+            <small>Timeline III</small>
             <h2>發現漏水、損害擴大與現場跡象</h2>
           </div>
           <div class="chip-row">
@@ -617,25 +750,34 @@
         <div class="timeline">
           <article class="event">
             <div class="event-head">
-              <h3>入住後約半年開始出現壁癌</h3>
+              <div class="event-main">
+                <span class="event-tag front">前手</span>
+                <h3>入住後約半年開始出現壁癌</h3>
+              </div>
               <span class="event-date">依 LINE 整理，未定位到精確日期</span>
             </div>
             <p>LINE 整理指出，裝潢完成入住後約半年開始出現壁癌，從發現壁癌到確認是廁所漏水，中間又拖了約八個月。</p>
-            <div class="sub">意義：可解釋原告不是立即掌握漏水源頭，亦有助回應對方若主張延誤通知的說法。</div>
+            <div class="sub">意義：本頁先將此節點歸在前手漏水發現脈絡，可解釋原告不是立即掌握漏水源頭，亦有助回應對方若主張延誤通知的說法。</div>
           </article>
 
           <article class="event">
             <div class="event-head">
-              <h3>2024-01-28 發現壁面漏水 / 壁癌</h3>
+              <div class="event-main">
+                <span class="event-tag front">前手</span>
+                <h3>2024-01-28 發現壁面漏水 / 壁癌</h3>
+              </div>
               <span class="event-date">書狀與 LINE 均有記載</span>
             </div>
             <p>書狀載明原告於 2024-01-28 發現壁面漏水問題，並請大樓總幹事張克華陪同查看；LINE 整理亦記「2024/1/28 發現壁癌」。</p>
-            <div class="sub">意義：這是瑕疵發現期間的重要起算節點，也是法院最容易抓的日期。</div>
+            <div class="sub">意義：此節點在頁面上歸為前手漏水發現脈絡，避免與後手的未驗收、催尾款爭議混寫；同時也是瑕疵發現期間的重要起算節點。</div>
           </article>
 
           <article class="event">
             <div class="event-head">
-              <h3>2024-04-11 睿創工人來處理壁癌並重上防水漆</h3>
+              <div class="event-main">
+                <span class="event-tag back">後手</span>
+                <h3>2024-04-11 睿創工人來處理壁癌並重上防水漆</h3>
+              </div>
               <span class="event-date">LINE 整理載明：2024/4/11</span>
             </div>
             <p>依整理，睿創曾派兩名工人前來處理壁癌，並重新上防水漆，但這顯然未能真正排除漏水源頭。</p>
@@ -644,16 +786,22 @@
 
           <article class="event">
             <div class="event-head">
-              <h3>2024-09-16 找到明確出水點</h3>
+              <div class="event-main">
+                <span class="event-tag back">後手</span>
+                <h3>2024-09-16 找到明確出水點</h3>
+              </div>
               <span class="event-date">依 LINE 整理</span>
             </div>
             <p>LINE 記載原告直到 2024-09-16 才明確找到出水點，先前設計公司長期將原因推給外牆，直到助理到場才無法再否認。</p>
-            <div class="sub">意義：說明「知道有問題」與「真正確認漏水源」是兩件事。</div>
+            <div class="sub">意義：在本頁脈絡中，此節點偏向後手漏水具體化的發現線，說明「知道有問題」與「真正確認漏水源」是兩件事。</div>
           </article>
 
           <article class="event">
             <div class="event-head">
-              <h3>2026-05-05 至 2026-05-06 集中整理出可視化現場證據</h3>
+              <div class="event-main">
+                <span class="event-tag procedure">程序</span>
+                <h3>2026-05-05 至 2026-05-06 集中整理出可視化現場證據</h3>
+              </div>
               <span class="event-date">依圖文定位整理</span>
             </div>
             <p>現場照片與影片已可定位到窗框空洞、噴水穿透、紅磚牆切窗、接縫裂縫、木板拆開後潮濕與黑點等具體現象。</p>
@@ -665,7 +813,7 @@
       <section class="card panel" id="timeline-litigation">
         <div class="card-head">
           <div class="card-title">
-            <small>Timeline III</small>
+            <small>Timeline IV</small>
             <h2>訴訟程序與待來鑑定</h2>
           </div>
           <div class="chip-row">
@@ -677,7 +825,10 @@
         <div class="timeline">
           <article class="event">
             <div class="event-head">
-              <h3>2024-11-29 遞狀起訴</h3>
+              <div class="event-main">
+                <span class="event-tag procedure">程序</span>
+                <h3>2024-11-29 遞狀起訴</h3>
+              </div>
               <span class="event-date">裁定理由欄明示：113年11月29日</span>
             </div>
             <p>法院裁定中直接記載原告於 2024-11-29 遞狀起訴，因此本件第一審訴訟已正式進入法院程序。</p>
@@ -686,7 +837,10 @@
 
           <article class="event">
             <div class="event-head">
-              <h3>2025-03-11 法院補字裁定核定價額</h3>
+              <div class="event-main">
+                <span class="event-tag procedure">程序</span>
+                <h3>2025-03-11 法院補字裁定核定價額</h3>
+              </div>
               <span class="event-date">114年度補字第632號</span>
             </div>
             <p>法院核定本件訴訟標的價額為新臺幣 523,898 元，並命補繳第一審裁判費 5,730 元。</p>
@@ -695,7 +849,10 @@
 
           <article class="event">
             <div class="event-head">
-              <h3>2026-05-19 預定法院系爭鑑定</h3>
+              <div class="event-main">
+                <span class="event-tag procedure">程序</span>
+                <h3>2026-05-19 預定法院系爭鑑定</h3>
+              </div>
               <span class="event-date">依 LINE 整理：5月19號才會進行鑑定</span>
             </div>
             <p>LINE 記載 2026-05-19 將進行法院這次的鑑定，且技師公會會到現場。這是目前程序上最重要的下一個節點。</p>
