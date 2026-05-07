@@ -366,6 +366,10 @@
       background: rgba(255, 250, 242, 0.75);
     }
 
+    .caption a {
+      font-weight: 600;
+    }
+
     .footer-box {
       border-radius: 24px;
       padding: 22px 24px;
@@ -680,10 +684,14 @@
         </div>
         <div class="gallery two">
           <figure class="media">
-            <video controls preload="metadata">
+            <video controls preload="metadata" playsinline>
+              <source src="./assets/IMG_4367.mp4" type="video/mp4" />
               <source src="./assets/IMG_4367.MOV" type="video/quicktime" />
             </video>
-            <figcaption class="caption">原始影片：噴水後穿透情形</figcaption>
+            <figcaption class="caption">
+              原始影片：噴水後穿透情形。
+              <a href="./assets/IMG_4367.mp4" target="_blank" rel="noopener noreferrer">若頁內仍無法播放，直接開啟 MP4</a>
+            </figcaption>
           </figure>
           <figure class="media"><img src="./assets/S__23691795.jpg" alt="E05-2" /><figcaption class="caption">外側位置補充照片</figcaption></figure>
         </div>
