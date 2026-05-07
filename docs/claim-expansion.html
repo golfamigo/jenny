@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jenny案 訴之擴張討論頁</title>
+  <style>
+    :root {
+      --bg: #f5efe8;
+      --paper: #fffaf3;
+      --ink: #201814;
+      --muted: #6e6259;
+      --line: #dccdbe;
+      --accent: #9a3412;
+      --accent-2: #7c2d12;
+      --soft: #f2e5d6;
+      --chip: #efe1d0;
+      --good: #31572c;
+      --warn: #92400e;
+      --info: #1d4ed8;
+      --shadow: 0 14px 34px rgba(75, 52, 37, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top right, rgba(154, 52, 18, 0.08), transparent 24%),
+        linear-gradient(180deg, #f8f2ea 0%, var(--bg) 100%);
+      font-family: "Microsoft JhengHei", "PingFang TC", sans-serif;
+      line-height: 1.72;
+    }
+
+    a {
+      color: var(--accent-2);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .shell {
+      width: min(1440px, calc(100vw - 32px));
+      margin: 24px auto 80px;
+      display: grid;
+      grid-template-columns: 320px minmax(0, 1fr);
+      gap: 20px;
+    }
+
+    .panel {
+      background: rgba(255, 250, 243, 0.88);
+      border: 1px solid rgba(220, 205, 190, 0.85);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 18px;
+      align-self: start;
+      border-radius: 24px;
+      overflow: hidden;
+    }
+
+    .sidebar-head {
+      padding: 22px 22px 18px;
+      background:
+        linear-gradient(145deg, rgba(154, 52, 18, 0.14), rgba(124, 45, 18, 0.04)),
+        var(--paper);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    h1 {
+      font-size: 34px;
+    }
+
+    .side-note {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .nav {
+      padding: 12px;
+      max-height: calc(100vh - 230px);
+      overflow: auto;
+    }
+
+    .nav-group {
+      margin-bottom: 16px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.46);
+      overflow: hidden;
+    }
+
+    .nav-title {
+      padding: 12px 14px;
+      font-size: 13px;
+      color: var(--muted);
+      background: rgba(239, 225, 208, 0.55);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav a {
+      display: block;
+      padding: 10px 14px;
+      color: var(--ink);
+      border-top: 1px solid rgba(220, 205, 190, 0.55);
+      font-size: 14px;
+    }
+
+    .nav a:first-of-type {
+      border-top: 0;
+    }
+
+    .nav a:hover {
+      background: rgba(242, 229, 214, 0.7);
+      text-decoration: none;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .hero {
+      position: relative;
+      border-radius: 28px;
+      padding: 28px;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -56px -72px auto;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(154, 52, 18, 0.2), transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero p {
+      margin: 14px 0 0;
+      max-width: 920px;
+      color: var(--muted);
+    }
+
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .action-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 42px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(154, 52, 18, 0.18);
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--accent-2);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .action-link:hover {
+      text-decoration: none;
+      background: rgba(243, 231, 216, 0.9);
+    }
+
+    .hero-grid {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .metric {
+      border-radius: 18px;
+      padding: 16px 18px;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(220, 205, 190, 0.88);
+    }
+
+    .metric .label {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .metric .value {
+      font-size: 25px;
+      font-weight: 700;
+    }
+
+    .card {
+      border-radius: 24px;
+      padding: 24px;
+    }
+
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 18px;
+      margin-bottom: 16px;
+    }
+
+    .card-title small {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 6px 11px;
+      border-radius: 999px;
+      background: var(--chip);
+      border: 1px solid rgba(154, 52, 18, 0.12);
+      font-size: 13px;
+      color: var(--accent-2);
+      white-space: nowrap;
+    }
+
+    .chip.good {
+      background: rgba(49, 87, 44, 0.1);
+      color: var(--good);
+      border-color: rgba(49, 87, 44, 0.16);
+    }
+
+    .chip.warn {
+      background: rgba(146, 64, 14, 0.12);
+      color: var(--warn);
+      border-color: rgba(146, 64, 14, 0.18);
+    }
+
+    .chip.info {
+      background: rgba(29, 78, 216, 0.1);
+      color: var(--info);
+      border-color: rgba(29, 78, 216, 0.16);
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .stack {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .note-box {
+      padding: 18px;
+      border-radius: 20px;
+      border: 1px solid rgba(220, 205, 190, 0.85);
+      background: rgba(255, 255, 255, 0.56);
+    }
+
+    .note-box h3 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .note-box p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .flat-list {
+      margin: 10px 0 0;
+      padding-left: 18px;
+    }
+
+    .flat-list li {
+      margin: 6px 0;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .summary-card {
+      padding: 18px;
+      border-radius: 20px;
+      border: 1px solid rgba(220, 205, 190, 0.85);
+      background: rgba(255, 255, 255, 0.62);
+    }
+
+    .summary-card h3 {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .summary-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 22px;
+      border: 1px solid rgba(220, 205, 190, 0.9);
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1280px;
+    }
+
+    th,
+    td {
+      padding: 14px 14px;
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid rgba(220, 205, 190, 0.72);
+      font-size: 14px;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      background: rgba(242, 229, 214, 0.96);
+      color: var(--ink);
+      font-size: 13px;
+      letter-spacing: 0.03em;
+      z-index: 1;
+    }
+
+    tbody tr:nth-child(odd) {
+      background: rgba(255, 250, 243, 0.75);
+    }
+
+    tbody tr:nth-child(even) {
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    .item-title {
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+
+    .cell-note {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .evidence-grid,
+    .decision-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .evidence-card,
+    .decision-card {
+      padding: 18px;
+      border-radius: 20px;
+      border: 1px solid rgba(220, 205, 190, 0.85);
+      background: rgba(255, 255, 255, 0.56);
+    }
+
+    .evidence-card h3,
+    .decision-card h3 {
+      font-size: 17px;
+      margin-bottom: 10px;
+    }
+
+    .evidence-card p,
+    .decision-card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .footer-box {
+      border-radius: 24px;
+      padding: 22px 24px;
+    }
+
+    .footer-box p {
+      margin: 10px 0 0;
+      color: var(--muted);
+    }
+
+    @media (max-width: 1180px) {
+      .shell {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+
+      .hero-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .hero-grid,
+      .two-col,
+      .summary-grid,
+      .evidence-grid,
+      .decision-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card-head {
+        flex-direction: column;
+      }
+
+      h1 {
+        font-size: 29px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar panel">
+      <div class="sidebar-head">
+        <span class="eyebrow">訴之擴張</span>
+        <h2>Jenny案</h2>
+        <div class="side-note">
+          供原告與律師盤點訴之擴張方向的工作頁。<br />
+          先把可主張項目、法律基礎、證據現況與缺口攤平。
+        </div>
+      </div>
+      <nav class="nav">
+        <div class="nav-group">
+          <div class="nav-title">討論架構</div>
+          <a href="#overview">頁面說明</a>
+          <a href="#strategy">策略定位</a>
+          <a href="#claim-table">求償項目總表</a>
+          <a href="#evidence-gap">證據補強重點</a>
+          <a href="#decision-points">律師決策點</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">連回既有頁面</div>
+          <a href="./timeline.html">回時間軸頁</a>
+          <a href="./index.html">回證據閱讀版</a>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <section class="hero panel" id="overview">
+        <span class="eyebrow">Jenny案 / 工作頁</span>
+        <h1>訴之擴張討論頁</h1>
+        <p>
+          本頁是供原告與律師盤點所有可能求償項目、法律基礎、現有證據與缺失候補的工作頁。重點是先確保修繕金、鑑定費、木地板與附帶裝修損害足額回復，再評估其他擴張項目。
+        </p>
+        <div class="action-row">
+          <a class="action-link" href="#strategy">先看策略定位</a>
+          <a class="action-link" href="#claim-table">直接看求償項目總表</a>
+          <a class="action-link" href="./timeline.html">回時間軸頁</a>
+        </div>
+        <div class="hero-grid">
+          <div class="metric">
+            <span class="label">保本主軸</span>
+            <span class="value">5 類</span>
+          </div>
+          <div class="metric">
+            <span class="label">策略擴張項</span>
+            <span class="value">5 大類</span>
+          </div>
+          <div class="metric">
+            <span class="label">需補強證據</span>
+            <span class="value">7 項</span>
+          </div>
+          <div class="metric">
+            <span class="label">律師決策點</span>
+            <span class="value">6 項</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card panel" id="strategy">
+        <div class="card-head">
+          <div class="card-title">
+            <small>討論定位</small>
+            <h2>策略定位</h2>
+          </div>
+          <div class="chip-row">
+            <span class="chip good">保本主軸</span>
+            <span class="chip info">策略擴張項</span>
+            <span class="chip warn">先補證據再定額</span>
+          </div>
+        </div>
+        <div class="two-col">
+          <article class="note-box">
+            <h3>保本主軸</h3>
+            <p>這一區應優先鎖定可直接回復原狀或與漏水損害有明確因果的支出，先把修復本體與附隨損害做足。</p>
+            <ul class="flat-list">
+              <li>漏水本體修復費。</li>
+              <li>鑑定費與必要檢測費。</li>
+              <li>木地板損害。</li>
+              <li>附帶裝修復原。</li>
+              <li>恢復原有居住品質所必要的直接支出。</li>
+            </ul>
+          </article>
+          <article class="note-box">
+            <h3>策略擴張項</h3>
+            <p>這一區建議以 5 大類整理，但可拆成 8 個具體子項來判斷是否納入，避免金額、法律基礎與證據成熟度混在一起。</p>
+            <ul class="flat-list">
+              <li>遷居與住宿。</li>
+              <li>搬運與倉儲。</li>
+              <li>除霉 / 除蟲 / 清潔。</li>
+              <li>居住空間縮減或部分失能損害。</li>
+              <li>身心損害（健康損害、精神慰撫金）。</li>
+            </ul>
+            <p style="margin-top:10px;">具體子項可再拆為 8 項：修復期間遷居費、住宿費、搬運費、倉儲費、除霉 / 除蟲 / 清潔費、居住空間縮減或部分失能損害、健康損害、精神慰撫金。</p>
+          </article>
+        </div>
+        <div class="summary-grid">
+          <article class="summary-card">
+            <h3>民法第 493 條</h3>
+            <p>承攬工作有瑕疵時，得請求修補、解除或減少報酬，是漏水本體修復與瑕疵責任的起點。</p>
+          </article>
+          <article class="summary-card">
+            <h3>民法第 495 條</h3>
+            <p>承攬人不於相當期間補正時，定作人得請求賠償，因此可承接修復費與另行發包費用。</p>
+          </article>
+          <article class="summary-card">
+            <h3>民法第 213 條</h3>
+            <p>損害賠償以回復原狀為原則，木地板、附帶裝修與必要復原支出可放在這條路徑下整理。</p>
+          </article>
+          <article class="summary-card">
+            <h3>民法第 216 條、227 條</h3>
+            <p>可主張所受損害及所失利益內的直接支出，並以債務不履行補充承接修復期間衍生費用。</p>
+          </article>
+          <article class="summary-card">
+            <h3>民法第 195 條、227-1 條</h3>
+            <p>主要對應健康損害與精神慰撫金等非財產上損害；財產性支出仍以 213、216、227 路徑整理較一致。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="card panel" id="claim-table">
+        <div class="card-head">
+          <div class="card-title">
+            <small>項目總覽</small>
+            <h2>求償項目總表</h2>
+          </div>
+          <div class="chip-row">
+            <span class="chip good">保本主軸優先</span>
+            <span class="chip info">擴張項視證據成熟度</span>
+            <span class="chip warn">未定額標示待估</span>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>分類</th>
+                <th>項目</th>
+                <th>法律基礎</th>
+                <th>可主張理由</th>
+                <th>目前已有證據</th>
+                <th>缺失候補</th>
+                <th>可量化方式</th>
+                <th>與律師討論重點</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="chip good">保本主軸</span></td>
+                <td>
+                  <div class="item-title">漏水本體修復費</div>
+                  <div class="cell-note">浴室、窗框、牆面、門檻、地坪及漏水路徑本身的拆作與重作。</div>
+                </td>
+                <td>民法 493、495、213、216、227</td>
+                <td>若承攬工程及防水處理存在瑕疵，原告得請求回復原狀所需修復費用。</td>
+                <td>第一次鑑定書、噴水穿透影片、窗框空洞與裂縫照片、既有估價單。</td>
+                <td>最新修繕估價單、最新鑑定或複估。</td>
+                <td>以最新修繕估價單、拆作範圍與工法明細加總；目前金額待估。</td>
+                <td>是否以最新修繕估價作為主金額基礎，並將修復範圍寫到足以涵蓋漏水路徑全部工項。</td>
+              </tr>
+              <tr>
+                <td><span class="chip good">保本主軸</span></td>
+                <td>
+                  <div class="item-title">鑑定費與必要檢測費</div>
+                  <div class="cell-note">包含法院鑑定費、紅外線檢測、灑水測試或必要技術檢測。</div>
+                </td>
+                <td>民法 213、216、227、495</td>
+                <td>為釐清漏水原因與修復方法所支出的必要費用，屬回復原狀及損害賠償範圍。</td>
+                <td>法院函、土木技師公會函、既有鑑定相關文件。</td>
+                <td>實際繳費收據、後續必要檢測單據。</td>
+                <td>依已繳鑑定費與檢測費單據列計；目前部分項目待單據。</td>
+                <td>是否將法院鑑定費與民間補充檢測費一併主張，避免僅列單一鑑定費。</td>
+              </tr>
+              <tr>
+                <td><span class="chip good">保本主軸</span></td>
+                <td>
+                  <div class="item-title">木地板損害</div>
+                  <div class="cell-note">主臥或受潮區域木地板拆除、重鋪、材料與工資。</div>
+                </td>
+                <td>民法 213、216、227、495</td>
+                <td>木地板因漏水受潮、膨脹、發霉或失去原有使用功能，屬直接損害。</td>
+                <td>木板拆開照片、潮濕蟲與內部異常照片、現況照片。</td>
+                <td>木地板拆除 / 重鋪 / 材料 / 工資單據、因果補充鑑定。</td>
+                <td>依拆除重鋪估價、坪數、材料等級與工資計算；目前待估。</td>
+                <td>木地板應列為保本主軸，不宜後移；並需確認是否要單列為獨立損害項。</td>
+              </tr>
+              <tr>
+                <td><span class="chip good">保本主軸</span></td>
+                <td>
+                  <div class="item-title">附帶裝修復原</div>
+                  <div class="cell-note">受影響牆面、油漆、收邊、門框、踢腳板或必要拆作後的復原。</div>
+                </td>
+                <td>民法 213、216、227、495</td>
+                <td>修復漏水通常必然伴隨局部裝修拆除與重作，若不復原即無法回到原使用狀態。</td>
+                <td>現況照片、第一次鑑定書、既有估價單、進場與牆面層次照片。</td>
+                <td>最新復原估價單、必要拆作說明。</td>
+                <td>依復原工項明細加總；目前待估。</td>
+                <td>是否將附帶裝修與本體修復同時列明，避免日後被切割成非必要費用。</td>
+              </tr>
+              <tr>
+                <td><span class="chip good">保本主軸</span></td>
+                <td>
+                  <div class="item-title">恢復原有居住品質所必要的直接支出</div>
+                  <div class="cell-note">臨時封護、除濕、保護性拆除、必要替代處置等直接支出，不含專業除霉 / 除蟲 / 清潔費。</div>
+                </td>
+                <td>民法 213、216、227</td>
+                <td>只要屬於為避免損害擴大或回復正常居住所必要支出，即可列為直接損害。</td>
+                <td>現況照片、對話紀錄中長期不能正常使用描述。</td>
+                <td>除濕設備租借、臨時處置、保護工程單據。</td>
+                <td>依實際發票或收據列計；目前多數待單據。</td>
+                <td>是否先將此項限縮為臨時防護與替代處置，與專業除霉清潔費清楚切開。</td>
+              </tr>
+              <tr>
+                <td><span class="chip info">策略擴張項</span></td>
+                <td>
+                  <div class="item-title">修復期間遷居 / 住宿 / 搬運 / 倉儲</div>
+                  <div class="cell-note">包含修繕期間另覓住處及物品移置成本。</div>
+                </td>
+                <td>民法 213、216、227</td>
+                <td>若修復工程客觀上使原居所無法正常居住，遷居與搬運為可預見之必要支出。</td>
+                <td>現況照片、不能正常使用敘述、鑑定程序文件。</td>
+                <td>住宿搬運倉儲單據、修復期間不可居住的鑑定承接。</td>
+                <td>依實支住宿日數、搬運報價、倉儲月費計算；目前待單據、待鑑定。</td>
+                <td>是否先列原因事實並保留金額待估，或待鑑定確認不可居住期間後再補具體數額。</td>
+              </tr>
+              <tr>
+                <td><span class="chip info">策略擴張項</span></td>
+                <td>
+                  <div class="item-title">除霉 / 除蟲 / 清潔費</div>
+                  <div class="cell-note">針對潮濕、霉菌、蟲體與污染區域的專業處理。</div>
+                </td>
+                <td>民法 213、216、227</td>
+                <td>若潮濕與漏水已引發霉斑、蟲害與衛生風險，該處理支出與漏水有直接關聯。</td>
+                <td>潮濕蟲與木板照片、現況照片。</td>
+                <td>除霉除蟲清潔與暫時處置單據、專業清潔報價。</td>
+                <td>依清潔公司報價或實際發票列計；目前待補單據。</td>
+                <td>是否獨立成項主張並納入本次擴張，以及如何以單據與報價補強金額基礎。</td>
+              </tr>
+              <tr>
+                <td><span class="chip info">策略擴張項</span></td>
+                <td>
+                  <div class="item-title">居住空間縮減或部分失能損害</div>
+                  <div class="cell-note">例如房間、浴室長期無法完整使用，造成實際居住功能受限。</div>
+                </td>
+                <td>民法 213、216、227</td>
+                <td>若部分空間長期失去原功能，可主張居住利益受損，但需具體量化基礎。</td>
+                <td>現況照片、長期不能正常使用的對話敘述。</td>
+                <td>修復期間不可居住的鑑定承接、空間受限期間整理表。</td>
+                <td>依受限空間坪數、期間、替代支出或使用減損方式估算；目前待鑑定。</td>
+                <td>法院是否會接受此類量化方式，以及是否要以原因事實保留後續補強空間。</td>
+              </tr>
+              <tr>
+                <td><span class="chip info">策略擴張項</span></td>
+                <td>
+                  <div class="item-title">健康損害</div>
+                  <div class="cell-note">若黴菌、潮濕或蟲害造成具體身體不適或就醫。</div>
+                </td>
+                <td>民法 195、227-1</td>
+                <td>需證明漏水環境與身體不適間有醫療紀錄或相當因果連結，方適合列入。</td>
+                <td>目前以居住環境惡化事實為主，醫療證據不足。</td>
+                <td>醫療紀錄、診斷證明、用藥或就醫收據。</td>
+                <td>依醫療支出實支列計，其他損害待醫證支持；目前待單據。</td>
+                <td>本次是否先不列金額、僅保留健康受影響事實，待醫證完整後再擴張。</td>
+              </tr>
+              <tr>
+                <td><span class="chip info">策略擴張項</span></td>
+                <td>
+                  <div class="item-title">精神慰撫金</div>
+                  <div class="cell-note">以長期居住受擾、生活品質嚴重受損為核心事實。</div>
+                </td>
+                <td>民法 195、227-1</td>
+                <td>若可具體說明長期漏水、霉味、房間失能與生活重大不便，可評估非財產上損害。</td>
+                <td>現況照片、對話敘述、長期無法正常使用事實。</td>
+                <td>生活影響整理、必要時輔助醫療或諮商資料。</td>
+                <td>依個案情節斟酌，通常待估。</td>
+                <td>本次是否主張精神慰撫金，及其與健康損害是否分列或擇一強化。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card panel" id="evidence-gap">
+        <div class="card-head">
+          <div class="card-title">
+            <small>證據補強</small>
+            <h2>證據補強重點</h2>
+          </div>
+          <div class="chip-row">
+            <span class="chip warn">補強重點</span>
+            <span class="chip">補強量化</span>
+            <span class="chip">補強因果</span>
+          </div>
+        </div>
+        <div class="evidence-grid">
+          <article class="evidence-card">
+            <h3>最新修繕估價單</h3>
+            <p>需要能對應最新漏水修復工法、範圍、拆作與復原內容，作為主請求金額核心。</p>
+          </article>
+          <article class="evidence-card">
+            <h3>木地板拆除 / 重鋪 / 材料 / 工資單據</h3>
+            <p>木地板損害必須有坪數、材料等級、工資與必要拆除內容，才能避免只停在照片描述。</p>
+          </article>
+          <article class="evidence-card">
+            <h3>除霉除蟲清潔與暫時處置單據</h3>
+            <p>若要把霉菌、蟲害與衛生處理費用列入，需要報價或實際支出證明。</p>
+          </article>
+          <article class="evidence-card">
+            <h3>住宿搬運倉儲單據</h3>
+            <p>遷居、住宿與物品移置支出若無單據，後續通常只能先列原因事實。</p>
+          </article>
+          <article class="evidence-card">
+            <h3>醫療紀錄</h3>
+            <p>健康損害若要主張，至少需診斷證明、就醫紀錄或醫療支出收據。</p>
+          </article>
+          <article class="evidence-card">
+            <h3>木地板與漏水路徑因果</h3>
+            <p>需由鑑定或專業意見把受潮木地板與漏水位置、路徑、期間連接起來。</p>
+          </article>
+          <article class="evidence-card">
+            <h3>修復期間不可居住的鑑定承接</h3>
+            <p>若要主張遷居費或空間部分失能，最好由鑑定明確說明修復期間與可居住性限制。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="card panel" id="decision-points">
+        <div class="card-head">
+          <div class="card-title">
+            <small>律師討論</small>
+            <h2>律師決策點</h2>
+          </div>
+          <div class="chip-row">
+            <span class="chip good">主金額</span>
+            <span class="chip info">列項方式</span>
+            <span class="chip warn">先列事實或先列金額</span>
+          </div>
+        </div>
+        <div class="decision-grid">
+          <article class="decision-card">
+            <h3>1. 是否以最新修繕估價與木地板復原費作為本次擴張主金額</h3>
+            <p>若要讓請求額度站穩，主金額基礎應先決定是採單一整體修繕估價，還是拆成本體修復、木地板、附帶裝修三個區塊。</p>
+          </article>
+          <article class="decision-card">
+            <h3>2. 木地板與附帶裝修是否在本次擴張中獨立列項</h3>
+            <p>這兩項已屬保本主軸，重點是如何在請求結構上獨立列明，避免後續被切割為附隨費用或被本體修復費吸收。</p>
+          </article>
+          <article class="decision-card">
+            <h3>3. 遷居 / 住宿費是否先列原因事實，待鑑定後補金額</h3>
+            <p>若目前不可居住期間仍未明確，先列事實基礎可能較穩，之後再補實際金額與單據。</p>
+          </article>
+          <article class="decision-card">
+            <h3>4. 精神慰撫金與健康損害本次是否主張</h3>
+            <p>若醫療與生活影響資料尚未成形，需判斷本次是否先保留，避免削弱整體請求密度。</p>
+          </article>
+          <article class="decision-card">
+            <h3>5. 是否需補強不可居住期間與居住空間縮減的量化基礎</h3>
+            <p>若希望主張遷居費或部分失能損害，需先決定採鑑定量化、實支量化，或混合方式。</p>
+          </article>
+          <article class="decision-card">
+            <h3>6. 恢復原有居住品質所必要的直接支出要併入主項還是獨立列項</h3>
+            <p>這會影響書狀表達密度與請求額結構，需判斷是整合進回復原狀，還是拆成更易閱讀的次項。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="footer-box panel">
+        <span class="eyebrow">Page Use</span>
+        <h2>使用提醒</h2>
+        <p>本頁定位是討論工作頁，不是正式書狀。若後續要轉成書狀內容，建議先依本頁欄位逐項確認法律基礎、證據成熟度與金額量化方式，再決定本次訴之擴張的實際請求範圍。</p>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
